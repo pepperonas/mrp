@@ -1,0 +1,71 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+:root {
+  --bg-primary: #1A1C27;
+  --bg-secondary: #2C2E3B;
+  --brand: #4A90E2;
+  --accent: #FF6B35;
+  --text-primary: #FFFFFF;
+  --text-secondary: #B0B3C1;
+  --radius-lg: 0.5rem;
+  --radius-xl: 0.75rem;
+  --transition: 300ms ease;
+  --glow-brand: 0 0 20px rgba(74, 144, 226, 0.3);
+  --glow-accent: 0 0 20px rgba(255, 107, 53, 0.3);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow: hidden;
+}
+
+#root {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-secondary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--bg-secondary);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #3C3E4B;
+}
+
+/* Custom Utilities */
+@layer utilities {
+  .glow-brand {
+    box-shadow: var(--glow-brand);
+  }
+  
+  .glow-accent {
+    box-shadow: var(--glow-accent);
+  }
+}
+

@@ -1,0 +1,42 @@
+appId: io.celox.mrp
+productName: MRP
+copyright: "© 2025 Martin Pfeffer | celox.io"
+
+directories:
+  output: dist
+  buildResources: resources
+
+files:
+  - "dist-electron/**/*"
+  - "dist/**/*"
+  - "package.json"
+
+# Windows - Portable
+win:
+  target:
+    - target: portable
+      arch: [x64]
+  icon: resources/icon.ico
+
+portable:
+  artifactName: "MRP-${version}-Windows-Portable.exe"
+
+# macOS - Universal Binary
+mac:
+  target:
+    - target: dir
+      arch: [universal]
+  icon: resources/icon.icns
+  category: public.app-category.productivity
+
+# Linux - AppImage
+linux:
+  target:
+    - target: AppImage
+      arch: [x64]
+  icon: resources/icon.png
+  category: Utility
+
+# Keine Auto-Updates für Portable
+publish: null
+
