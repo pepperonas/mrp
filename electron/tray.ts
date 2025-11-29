@@ -245,12 +245,14 @@ export const createTray = (mainWindow: BrowserWindow | null): void => {
 
   updateMenu();
 
-  // Linksklick: Fenster öffnen
+  // Linksklick: Fenster immer öffnen/anzeigen
   tray.on('click', () => {
     if (mainWindow) {
       if (mainWindow.isVisible()) {
-        mainWindow.hide();
+        // Wenn Fenster bereits sichtbar ist, nur fokussieren
+        mainWindow.focus();
       } else {
+        // Wenn Fenster versteckt ist, anzeigen und fokussieren
         mainWindow.show();
         mainWindow.focus();
       }

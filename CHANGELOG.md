@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.0.2] - 2025-11-29
+
+### Behoben
+- **Onboarding-Dialog**: Wird jetzt nur beim ersten App-Start angezeigt, nicht mehr beim Navigieren zwischen Seiten
+- **Tray-Icon Verhalten**: Klick auf das Tray-Icon zeigt das Fenster jetzt immer an/fokussiert es, ohne es zu verstecken
+
 ## [1.0.1] - 2025-11-29
 
 ### Hinzugefügt

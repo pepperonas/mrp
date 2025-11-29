@@ -18,6 +18,7 @@ function App() {
   const [currentPage, setCurrentPage] = useState<Page>('dashboard');
   const [showAbout, setShowAbout] = useState(false);
   const [showOnboarding, setShowOnboarding] = useState(false);
+  const [onboardingChecked, setOnboardingChecked] = useState(false);
   const [version, setVersion] = useState('1.0.0');
   const { loadSettings, settings, updateSettings } = useSettingsStore();
   const { loadApiKey } = useApiKeysStore();
@@ -53,9 +54,10 @@ function App() {
     };
   }, []);
 
-  // Zeige Onboarding-Dialog beim ersten Start
+  // Zeige Onboarding-Dialog nur einmal beim ersten App-Start
   useEffect(() => {
-    if (settings) {
+    if (settings && !onboardingChecked) {
+      setOnboardingChecked(true);
       // Zeige Onboarding wenn explizit true
       if (settings.showOnboarding === true) {
         // Kleine Verzögerung, damit die App vollständig geladen ist
@@ -65,7 +67,7 @@ function App() {
         return () => clearTimeout(timer);
       }
     }
-  }, [settings]);
+  }, [settings, onboardingChecked]);
 
   const handleOnboardingClose = async (dontShowAgain: boolean) => {
     setShowOnboarding(false);
