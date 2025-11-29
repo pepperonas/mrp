@@ -10,7 +10,7 @@ import type { Provider } from '../types';
 const Dashboard: React.FC = () => {
   const { settings, loadSettings } = useSettingsStore();
   const { keys, statuses, loadApiKey, checkStatus } = useApiKeysStore();
-  const { metaprompts, loadMetaprompts } = useMetapromptsStore();
+  const { metaprompts, loadMetaprompts, setDefault } = useMetapromptsStore();
 
   useEffect(() => {
     loadSettings();
@@ -90,7 +90,7 @@ const Dashboard: React.FC = () => {
     })
     .map(mp => ({
       value: mp.id,
-      label: `${mp.name}${mp.isDefault ? ' ⭐ (Standard)' : ''}`,
+      label: mp.name,
     }));
 
   return (

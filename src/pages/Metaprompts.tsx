@@ -171,9 +171,9 @@ const Metaprompts: React.FC = () => {
             <Card 
               key={mp.id}
               className={`${
-                mp.isDefault 
+                isActive && mp.isDefault
                   ? 'border-2 border-brand bg-brand bg-opacity-5' 
-                  : isActive 
+                  : isActive && !mp.isDefault
                   ? 'border-2 border-blue-500 bg-blue-500 bg-opacity-5' 
                   : ''
               }`}
@@ -189,11 +189,6 @@ const Metaprompts: React.FC = () => {
                     <h3 className={`text-lg font-semibold ${mp.isDefault ? 'text-brand' : 'text-text-primary'}`}>
                       {mp.name}
                     </h3>
-                    {mp.isDefault && (
-                      <span className="text-xs px-3 py-1 bg-brand text-white rounded-full font-medium shadow-lg shadow-brand/50">
-                        Standard
-                      </span>
-                    )}
                   </div>
                   {mp.description && (
                     <p className="text-sm text-text-secondary mb-2">{mp.description}</p>
