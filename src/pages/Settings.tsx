@@ -13,7 +13,6 @@ const Settings: React.FC = () => {
   const { settings, loadSettings, updateSettings } = useSettingsStore();
   const [localSettings, setLocalSettings] = React.useState(settings);
   const [activeTab, setActiveTab] = React.useState<'general' | 'api-keys'>('general');
-  const [apiKeyTab, setApiKeyTab] = React.useState<Provider>('openai');
 
   useEffect(() => {
     loadSettings();
@@ -50,12 +49,7 @@ const Settings: React.FC = () => {
     gemini: 'Google (Gemini 1.5 Pro, Gemini 1.5 Flash)',
   };
 
-  const apiKeyTabs = [
-    { id: 'openai', label: 'OpenAI' },
-    { id: 'anthropic', label: 'Claude' },
-    { id: 'grok', label: 'Grok' },
-    { id: 'gemini', label: 'Gemini' },
-  ];
+  const providers: Provider[] = ['openai', 'anthropic', 'grok', 'gemini'];
 
   return (
     <div className="p-6 space-y-6">
@@ -163,9 +157,14 @@ const Settings: React.FC = () => {
                 Konfiguriere deine API-Keys für die verschiedenen Anbieter. Die Keys werden verschlüsselt gespeichert.
               </p>
             </div>
-            <Tabs tabs={apiKeyTabs} activeTab={apiKeyTab} onTabChange={(id) => setApiKeyTab(id as Provider)} />
           </Card>
-          <ApiKeyForm provider={apiKeyTab} providerName={providerNames[apiKeyTab]} />
+          {providers.map((provider) => (
+            <ApiKeyForm 
+              key={provider} 
+              provider={provider} 
+              providerName={providerNames[provider]} 
+            />
+          ))}
         </>
       )}
     </div>

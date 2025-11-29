@@ -1,7 +1,13 @@
 import { Tray, Menu, nativeImage, app, BrowserWindow } from 'electron';
 import path from 'path';
+import { existsSync } from 'fs';
+import { fileURLToPath } from 'url';
 import { getSettings, getMetaprompts } from './store';
 import type { Provider } from '../src/types';
+
+// Get __dirname for ES modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 let tray: Tray | null = null;
 
@@ -112,18 +118,91 @@ const createTrayMenu = (mainWindow: BrowserWindow | null): Menu => {
 };
 
 export const createTray = (mainWindow: BrowserWindow | null): void => {
-  // Icon laden (Fallback falls kein Icon vorhanden)
-  const iconPath = path.join(__dirname, '../../resources/icon.png');
+  // Icon laden und auf Tray-Größe skalieren
+  // macOS Tray-Icons sollten 16x16 Pixel sein (für normale Displays)
+  // Für Retina-Displays wird automatisch @2x verwendet
+  
   let icon = nativeImage.createEmpty();
   
-  try {
-    icon = nativeImage.createFromPath(iconPath);
-    if (icon.isEmpty()) {
-      // Fallback: Einfaches Template-Icon
-      icon = nativeImage.createFromNamedImage('NSApplicationIcon', 0);
+  // Bestimme die richtigen Pfade je nach Dev/Production-Mode
+  const isDev = !app.isPackaged;
+  
+  // Mögliche Icon-Pfade (in Reihenfolge der Priorität)
+  const possibleIconPaths: string[] = [];
+  
+  if (isDev) {
+    // Development-Mode: Pfade relativ zum Projekt-Root
+    // __dirname zeigt auf dist-electron/electron im Dev-Mode
+    const projectRoot = path.resolve(__dirname, '../..');
+    possibleIconPaths.push(
+      path.join(process.cwd(), 'resources/icons/icon-16.png'),
+      path.join(process.cwd(), 'resources/icons/icon-32.png'),
+      path.join(process.cwd(), 'resources/icon.png'),
+      path.join(projectRoot, 'resources/icons/icon-16.png'),
+      path.join(projectRoot, 'resources/icons/icon-32.png'),
+      path.join(projectRoot, 'resources/icon.png'),
+      path.join(__dirname, '../../resources/icons/icon-16.png'),
+      path.join(__dirname, '../../resources/icons/icon-32.png'),
+      path.join(__dirname, '../../resources/icon.png')
+    );
+    console.log(`🔍 Dev-Mode: Suche Icons in projectRoot=${projectRoot}, cwd=${process.cwd()}, __dirname=${__dirname}`);
+  } else {
+    // Production-Mode: Pfade relativ zur App
+    possibleIconPaths.push(
+      path.join(process.resourcesPath, 'icon.icns'),
+      path.join(process.resourcesPath, 'icon.png'),
+      path.join(app.getAppPath(), 'resources/icon.icns'),
+      path.join(app.getAppPath(), 'resources/icon.png'),
+      path.join(__dirname, '../../resources/icon.icns'),
+      path.join(__dirname, '../../resources/icon.png')
+    );
+  }
+  
+  // Versuche Icons in der Reihenfolge zu laden
+  console.log(`🔍 Suche Tray-Icon in ${possibleIconPaths.length} möglichen Pfaden...`);
+  for (const iconPath of possibleIconPaths) {
+    try {
+      if (existsSync(iconPath)) {
+        console.log(`  ✓ Gefunden: ${iconPath}`);
+        const loadedIcon = nativeImage.createFromPath(iconPath);
+        if (!loadedIcon.isEmpty()) {
+          const originalSize = loadedIcon.getSize();
+          // Skaliere auf 16x16 Pixel - das ist die Standard-Tray-Icon-Größe
+          // macOS wird es automatisch für Retina-Displays anpassen
+          icon = loadedIcon.resize({ width: 16, height: 16 });
+          console.log(`✅ Tray-Icon geladen: ${iconPath} (Original: ${originalSize.width}x${originalSize.height} → 16x16)`);
+          break;
+        } else {
+          console.log(`  ⚠️  Icon ist leer: ${iconPath}`);
+        }
+      } else {
+        console.log(`  ✗ Nicht gefunden: ${iconPath}`);
+      }
+    } catch (error) {
+      console.log(`  ✗ Fehler beim Laden: ${iconPath} - ${error}`);
+      // Weiter zum nächsten Pfad
+      continue;
     }
-  } catch {
-    icon = nativeImage.createFromNamedImage('NSApplicationIcon', 0);
+  }
+  
+  // Fallback: Template-Icon falls kein Custom-Icon gefunden wurde
+  if (icon.isEmpty()) {
+    try {
+      icon = nativeImage.createFromNamedImage('NSApplicationIcon', 0);
+      console.log('⚠️  Verwende Standard-Template-Icon');
+    } catch {
+      icon = nativeImage.createEmpty();
+      console.log('⚠️  Kein Icon gefunden');
+    }
+  }
+  
+  // Stelle sicher, dass das Icon die richtige Größe hat
+  if (!icon.isEmpty()) {
+    const size = icon.getSize();
+    // Wenn das Icon größer als 16x16 ist, skaliere es runter
+    if (size.width > 16 || size.height > 16) {
+      icon = icon.resize({ width: 16, height: 16 });
+    }
   }
 
   tray = new Tray(icon);

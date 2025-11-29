@@ -9,6 +9,7 @@ import { readClipboard, writeClipboard } from './clipboard';
 import { optimizePrompt } from './optimizer';
 import { validateApiKeyDirect } from './validateApiKey';
 import { DEFAULT_METAPROMPT } from '../src/types';
+import { createDefaultMetaprompts } from '../src/types/defaultMetaprompts';
 import { v4 as uuidv4 } from 'uuid';
 import type { Settings, Metaprompt, Provider } from '../src/types';
 
@@ -135,7 +136,7 @@ app.whenReady().then(() => {
   
   createWindow();
 
-  // Standard-Metaprompt erstellen falls noch keiner existiert
+  // Standard-Metaprompt und vorgefertigte Metaprompts erstellen falls noch keine existieren
   const metaprompts = getMetaprompts();
   const defaultMetapromptExists = metaprompts.some(m => m.isDefault);
   
@@ -157,6 +158,16 @@ app.whenReady().then(() => {
       setSettings({ activeMetapromptId: defaultMetaprompt.id });
     }
   }
+  
+  // Vorgefertigte Metaprompts hinzufügen (nur wenn sie noch nicht existieren)
+  const existingNames = new Set(metaprompts.map(m => m.name));
+  const defaultMetaprompts = createDefaultMetaprompts();
+  
+  defaultMetaprompts.forEach(mp => {
+    if (!existingNames.has(mp.name)) {
+      saveMetaprompt(mp);
+    }
+  });
 
   app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) {
@@ -285,17 +296,6 @@ ipcMain.handle('clipboard:write', (_event, text: string) => writeClipboard(text)
 // History
 ipcMain.handle('history:get', () => getHistory());
 ipcMain.handle('history:add', (_event, entry: any) => addHistory(entry));
-
-// App Info
-ipcMain.handle('app:getVersion', () => {
-  try {
-    const packagePath = join(__dirname, '../../package.json');
-    const packageJson = JSON.parse(readFileSync(packagePath, 'utf-8'));
-    return packageJson.version;
-  } catch (error) {
-    return '1.0.0'; // Fallback
-  }
-});
 
 // App Info
 ipcMain.handle('app:getVersion', () => {

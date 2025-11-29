@@ -22,6 +22,7 @@ export default defineConfig({
       {
         entry: 'electron/preload.ts',
         onstart(options) {
+          // Reload nur bei Änderungen am Preload-Script
           options.reload();
         },
         vite: {
