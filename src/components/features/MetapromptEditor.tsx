@@ -38,12 +38,15 @@ export const MetapromptEditor: React.FC<MetapromptEditorProps> = ({
 
     setLoading(true);
     try {
+      // Stelle sicher, dass der Standard-Metaprompt immer isDefault bleibt
+      const finalIsDefault = metaprompt?.isDefault ? true : isDefault;
+      
       const mp: Metaprompt = {
         id: metaprompt?.id || '', // Wird in der Page-Komponente gesetzt wenn leer
         name: name.trim(),
         description: description.trim() || undefined,
         content: content.trim(),
-        isDefault,
+        isDefault: finalIsDefault,
         createdAt: metaprompt?.createdAt || new Date(),
         updatedAt: new Date(),
       };
@@ -85,10 +88,12 @@ export const MetapromptEditor: React.FC<MetapromptEditorProps> = ({
             id="isDefault"
             checked={isDefault}
             onChange={(e) => setIsDefault(e.target.checked)}
-            className="w-4 h-4 text-brand bg-bg-secondary border-bg-primary rounded focus:ring-brand"
+            disabled={metaprompt?.isDefault}
+            className="w-4 h-4 text-brand bg-bg-secondary border-bg-primary rounded focus:ring-brand disabled:opacity-50 disabled:cursor-not-allowed"
           />
-          <label htmlFor="isDefault" className="ml-2 text-sm text-text-secondary">
+          <label htmlFor="isDefault" className={`ml-2 text-sm ${metaprompt?.isDefault ? 'text-text-secondary opacity-50' : 'text-text-secondary'}`}>
             Als Standard markieren
+            {metaprompt?.isDefault && ' (Standard-Metaprompt ist immer Standard)'}
           </label>
         </div>
         <div className="flex space-x-2">

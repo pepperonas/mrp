@@ -75,11 +75,33 @@ export const useMetapromptsStore = create<MetapromptsStore>((set, get) => ({
   
   setDefault: async (id: string) => {
     const metaprompts = get().metaprompts;
+    
+    // Stelle sicher, dass der Standard-Metaprompt immer existiert
+    const currentDefault = metaprompts.find(m => m.isDefault);
+    const newDefault = metaprompts.find(m => m.id === id);
+    
+    if (!newDefault) {
+      throw new Error('Metaprompt nicht gefunden');
+    }
+    
+    // Wenn ein anderer Metaprompt als Standard gesetzt wird, behalte den alten Standard
+    // aber entferne das isDefault-Flag von anderen
     const updated = metaprompts.map(m => ({
       ...m,
       isDefault: m.id === id,
-      updatedAt: new Date(),
+      updatedAt: m.id === id ? new Date() : m.updatedAt,
     }));
+    
+    // Stelle sicher, dass mindestens ein Metaprompt als Standard markiert ist
+    const hasDefault = updated.some(m => m.isDefault);
+    if (!hasDefault && currentDefault) {
+      // Falls kein Standard mehr existiert, behalte den aktuellen Standard
+      updated.forEach(m => {
+        if (m.id === currentDefault.id) {
+          m.isDefault = true;
+        }
+      });
+    }
     
     for (const mp of updated) {
       await get().saveMetaprompt(mp);

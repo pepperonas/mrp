@@ -27,6 +27,13 @@ const Metaprompts: React.FC = () => {
       mp.id = uuidv4();
       mp.createdAt = new Date();
     }
+    
+    // Stelle sicher, dass der Standard-Metaprompt immer isDefault bleibt
+    const existingMetaprompt = metaprompts.find(m => m.id === mp.id);
+    if (existingMetaprompt?.isDefault) {
+      mp.isDefault = true; // Erzwinge isDefault für Standard-Metaprompt
+    }
+    
     mp.updatedAt = new Date();
     
     await saveMetaprompt(mp);
@@ -78,8 +85,21 @@ const Metaprompts: React.FC = () => {
   };
 
   const handleDelete = async (id: string) => {
+    const metaprompt = metaprompts.find(m => m.id === id);
+    
+    // Verhindere Löschen des Standard-Metaprompts
+    if (metaprompt?.isDefault) {
+      alert('Der Standard-Metaprompt kann nicht gelöscht werden.');
+      return;
+    }
+    
     if (confirm('Metaprompt wirklich löschen?')) {
-      await deleteMetaprompt(id);
+      try {
+        await deleteMetaprompt(id);
+        await loadMetaprompts();
+      } catch (error) {
+        alert(error instanceof Error ? error.message : 'Fehler beim Löschen');
+      }
     }
   };
 
@@ -138,19 +158,39 @@ const Metaprompts: React.FC = () => {
             <p className="text-text-secondary text-center py-8">Keine Metaprompts vorhanden</p>
           </Card>
         ) : (
-          metaprompts.map((mp) => (
-            <Card key={mp.id}>
+          // Sortiere: Standard-Metaprompt zuerst
+          [...metaprompts].sort((a, b) => {
+            if (a.isDefault && !b.isDefault) return -1;
+            if (!a.isDefault && b.isDefault) return 1;
+            return 0;
+          }).map((mp) => (
+            <Card 
+              key={mp.id}
+              className={mp.isDefault ? 'border-2 border-brand bg-brand bg-opacity-5' : ''}
+            >
               <div className="flex items-start justify-between">
                 <div className="flex-1">
                   <div className="flex items-center space-x-2 mb-2">
-                    <h3 className="text-lg font-semibold text-text-primary">{mp.name}</h3>
                     {mp.isDefault && (
-                      <span className="text-xs px-2 py-1 bg-brand bg-opacity-20 text-brand rounded">
+                      <svg className="w-5 h-5 text-brand" fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                      </svg>
+                    )}
+                    <h3 className={`text-lg font-semibold ${mp.isDefault ? 'text-brand' : 'text-text-primary'}`}>
+                      {mp.name}
+                    </h3>
+                    {mp.isDefault && (
+                      <span className="text-xs px-3 py-1 bg-brand text-white rounded-full font-medium shadow-lg shadow-brand/50">
                         Standard
                       </span>
                     )}
-                    {settings?.activeMetapromptId === mp.id && (
+                    {settings?.activeMetapromptId === mp.id && !mp.isDefault && (
                       <span className="text-xs px-2 py-1 bg-green-500 bg-opacity-20 text-green-400 rounded">
+                        Aktiv
+                      </span>
+                    )}
+                    {settings?.activeMetapromptId === mp.id && mp.isDefault && (
+                      <span className="text-xs px-2 py-1 bg-green-500 bg-opacity-30 text-green-300 rounded border border-green-500/50">
                         Aktiv
                       </span>
                     )}
@@ -172,20 +212,24 @@ const Metaprompts: React.FC = () => {
                   >
                     Aktivieren
                   </Button>
-                  <Button
-                    variant="secondary"
-                    size="sm"
-                    onClick={() => handleEdit(mp.id)}
-                  >
-                    Bearbeiten
-                  </Button>
-                  <Button
-                    variant="danger"
-                    size="sm"
-                    onClick={() => handleDelete(mp.id)}
-                  >
-                    Löschen
-                  </Button>
+                  {!mp.isDefault && (
+                    <>
+                      <Button
+                        variant="secondary"
+                        size="sm"
+                        onClick={() => handleEdit(mp.id)}
+                      >
+                        Bearbeiten
+                      </Button>
+                      <Button
+                        variant="danger"
+                        size="sm"
+                        onClick={() => handleDelete(mp.id)}
+                      >
+                        Löschen
+                      </Button>
+                    </>
+                  )}
                 </div>
               </div>
             </Card>

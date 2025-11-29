@@ -81,11 +81,17 @@ const Dashboard: React.FC = () => {
     gemini: 'Gemini',
   };
 
-  // Metaprompt-Optionen für Dropdown
-  const metapromptOptions = metaprompts.map(mp => ({
-    value: mp.id,
-    label: `${mp.name}${mp.isDefault ? ' (Standard)' : ''}`,
-  }));
+  // Metaprompt-Optionen für Dropdown - Standard zuerst
+  const metapromptOptions = [...metaprompts]
+    .sort((a, b) => {
+      if (a.isDefault && !b.isDefault) return -1;
+      if (!a.isDefault && b.isDefault) return 1;
+      return 0;
+    })
+    .map(mp => ({
+      value: mp.id,
+      label: `${mp.name}${mp.isDefault ? ' ⭐ (Standard)' : ''}`,
+    }));
 
   return (
     <div className="p-6 space-y-6">

@@ -15,6 +15,15 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+// App-Name für macOS Dock setzen (muss sehr früh gesetzt werden, bevor app ready ist)
+// Im Entwicklungsmodus muss der Name mehrfach gesetzt werden
+app.setName('MRP');
+
+// Zusätzlich für macOS: Setze auch den Bundle-Namen
+if (process.platform === 'darwin') {
+  app.dock?.setIcon(path.join(__dirname, '../../resources/icon.png'));
+}
+
 let mainWindow: BrowserWindow | null = null;
 let isQuitting = false;
 
@@ -27,6 +36,12 @@ const createWindow = (): void => {
     backgroundColor: '#1A1C27',
     titleBarStyle: process.platform === 'darwin' ? 'hiddenInset' : 'default',
     frame: true,
+    titleBarOverlay: process.platform === 'darwin' ? {
+      color: '#2C2E3B',
+      symbolColor: '#FFFFFF',
+      height: 40,
+    } : undefined,
+    title: 'MRP',
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
       nodeIntegration: false,
@@ -66,11 +81,22 @@ const createWindow = (): void => {
 };
 
 app.whenReady().then(() => {
+  // Stelle sicher, dass der App-Name gesetzt ist (für macOS Dock)
+  // Muss nach app.whenReady() nochmal gesetzt werden für macOS
+  app.setName('MRP');
+  
+  // Für macOS Dock: Setze auch den Badge-Text (falls nötig)
+  if (process.platform === 'darwin') {
+    app.dock?.setBadge('');
+  }
+  
   createWindow();
 
   // Standard-Metaprompt erstellen falls noch keiner existiert
   const metaprompts = getMetaprompts();
-  if (metaprompts.length === 0) {
+  const defaultMetapromptExists = metaprompts.some(m => m.isDefault);
+  
+  if (!defaultMetapromptExists) {
     const defaultMetaprompt: Metaprompt = {
       id: uuidv4(),
       name: 'Standard Optimizer',
@@ -82,9 +108,11 @@ app.whenReady().then(() => {
     };
     saveMetaprompt(defaultMetaprompt);
     
-    // Als aktiv setzen
+    // Als aktiv setzen falls noch kein aktiver Metaprompt gesetzt ist
     const settings = getSettings();
-    setSettings({ activeMetapromptId: defaultMetaprompt.id });
+    if (!settings.activeMetapromptId) {
+      setSettings({ activeMetapromptId: defaultMetaprompt.id });
+    }
   }
 
   app.on('activate', () => {
@@ -162,6 +190,14 @@ ipcMain.handle('metaprompts:save', (_event, mp: Metaprompt) => {
   updateTrayMenu(mainWindow);
 });
 ipcMain.handle('metaprompts:delete', (_event, id: string) => {
+  const metaprompts = getMetaprompts();
+  const metaprompt = metaprompts.find(m => m.id === id);
+  
+  // Verhindere Löschen des Standard-Metaprompts
+  if (metaprompt?.isDefault) {
+    throw new Error('Der Standard-Metaprompt kann nicht gelöscht werden');
+  }
+  
   deleteMetaprompt(id);
   updateTrayMenu(mainWindow);
 });

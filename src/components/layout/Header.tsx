@@ -16,7 +16,11 @@ const Header: React.FC<HeaderProps> = ({ currentPage, onPageChange }) => {
   ];
 
   return (
-    <header className="bg-bg-secondary border-b border-bg-primary px-6 py-4" style={{ paddingRight: '80px' } as React.CSSProperties}>
+    <header className="bg-bg-secondary border-b border-bg-primary py-4" style={{ 
+      paddingLeft: '80px', 
+      paddingRight: '80px',
+      paddingTop: '20px'
+    } as React.CSSProperties}>
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold text-text-primary flex-shrink-0">MRP</h1>
         <nav className="flex space-x-2 flex-shrink-0">

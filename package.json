@@ -6,6 +6,7 @@
   "author": "Martin Pfeffer | celox.io",
   "license": "MIT",
   "private": true,
+  "productName": "MRP",
   "scripts": {
     "dev": "vite",
     "build": "npx tsc && vite build",

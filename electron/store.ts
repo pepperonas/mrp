@@ -89,8 +89,16 @@ export const saveMetaprompt = (metaprompt: Metaprompt): void => {
 };
 
 export const deleteMetaprompt = (id: string): void => {
-  const metaprompts = getMetaprompts().filter(m => m.id !== id);
-  store.set('metaprompts', metaprompts);
+  const metaprompts = getMetaprompts();
+  const metapromptToDelete = metaprompts.find(m => m.id === id);
+  
+  // Verhindere Löschen des Standard-Metaprompts
+  if (metapromptToDelete?.isDefault) {
+    throw new Error('Der Standard-Metaprompt kann nicht gelöscht werden');
+  }
+  
+  const filtered = metaprompts.filter(m => m.id !== id);
+  store.set('metaprompts', filtered);
 };
 
 export const getHistory = () => {
