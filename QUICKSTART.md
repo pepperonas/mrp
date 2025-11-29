@@ -23,24 +23,38 @@
 5. Trage deinen API-Key ein
 6. Klicke auf "Speichern & Validieren"
 
-### 2. Metaprompt auswählen
+### 2. Metaprompts einrichten
 
-- Ein Standard-Metaprompt wird automatisch beim ersten Start erstellt
-- Du kannst in "Metaprompts" neue erstellen oder bestehende bearbeiten
-- Verwende `{user_prompt}` als Platzhalter für den zu optimierenden Text
+Metaprompts sind **Vorlagen**, die definieren, wie normale Prompts optimiert werden sollen:
+
+- **Standard-Metaprompt**: Wird automatisch beim ersten Start erstellt
+- **Neue Metaprompts erstellen**:
+  - **Mit KI generieren**: Beschreibe einen Anwendungsfall (z.B. "Code-Generierung", "Kreatives Schreiben") und lass die KI eine passende Vorlage erstellen
+  - **Manuell erstellen**: Erstelle eigene Metaprompts mit dem Editor
+- **Metaprompts aktivieren**: Wähle einen Metaprompt aus und klicke auf "Aktivieren"
+
+**Tipp**: Erstelle mehrere Metaprompts für verschiedene Anwendungsfälle und aktiviere sie nach Bedarf.
 
 ### 3. Prompt optimieren
 
+Der aktive Metaprompt wird als Vorlage verwendet, um deinen normalen Prompt zu optimieren.
+
 **Methode 1: Global Shortcut**
-1. Kopiere einen Text in die Zwischenablage
+1. Kopiere einen normalen Prompt in die Zwischenablage
 2. Drücke `Ctrl+Shift+M` (oder `Cmd+Shift+M` auf macOS)
-3. Der optimierte Prompt wird automatisch in die Zwischenablage kopiert
-4. Füge ihn mit `Ctrl+V` ein
+3. Der aktive Metaprompt wird verwendet, um deinen Prompt zu optimieren
+4. Das optimierte Ergebnis wird automatisch in die Zwischenablage kopiert
+5. Füge es mit `Ctrl+V` ein
 
 **Methode 2: Dashboard**
 1. Öffne das Dashboard
-2. Kopiere einen Text in die Zwischenablage
+2. Kopiere einen normalen Prompt in die Zwischenablage
 3. Klicke auf "Prompt jetzt optimieren"
+
+**Beispiel-Workflow:**
+- Für Code-Prompts: Aktiviere einen Metaprompt für "Code-Generierung"
+- Für kreative Texte: Aktiviere einen anderen Metaprompt für "Kreatives Schreiben"
+- Wechsle zwischen Metaprompts je nach Bedarf
 
 ## Build für Produktion
 

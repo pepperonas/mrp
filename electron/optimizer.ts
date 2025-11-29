@@ -17,17 +17,23 @@ export const optimizePrompt = async (request: OptimizationRequest): Promise<Opti
     const settings = getSettings();
     const metaprompts = getMetaprompts();
     
-    // Aktiven Metaprompt laden
+    // Aktive Metaprompt-Vorlage laden und mit dem normalen Prompt kombinieren
     let metapromptContent = request.metaprompt;
-    if (!metapromptContent) {
+    
+    // Wenn metaprompt gleich userPrompt ist, handelt es sich um einen direkten Call (z.B. für Metaprompt-Generierung)
+    if (metapromptContent === request.userPrompt) {
+      // Direkter Prompt ohne Metaprompt-Vorlage verwenden
+      metapromptContent = request.userPrompt;
+    } else if (!metapromptContent) {
       const activeMetaprompt = metaprompts.find(m => m.id === settings.activeMetapromptId) ||
                                metaprompts.find(m => m.isDefault) ||
                                metaprompts[0];
       
       if (activeMetaprompt) {
+        // Metaprompt-Vorlage verwenden: {user_prompt} wird durch den zu optimierenden Prompt ersetzt
         metapromptContent = activeMetaprompt.content.replace('{user_prompt}', request.userPrompt);
       } else {
-        // Fallback auf Standard-Metaprompt
+        // Fallback auf Standard-Metaprompt-Vorlage
         metapromptContent = `Du bist ein Experte für Prompt Engineering. Deine Aufgabe ist es, den folgenden Prompt zu optimieren.
 
 ## Optimierungsrichtlinien:
@@ -37,7 +43,7 @@ export const optimizePrompt = async (request: OptimizationRequest): Promise<Opti
 4. Entferne Mehrdeutigkeiten
 5. Strukturiere komplexe Anfragen in Schritte
 
-## Eingabe-Prompt:
+## Zu optimierender Prompt:
 ${request.userPrompt}
 
 ## Aufgabe:

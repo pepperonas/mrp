@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Card } from '../components/ui/Card';
 import { Button } from '../components/ui/Button';
 import { MetapromptEditor } from '../components/features/MetapromptEditor';
+import { MetapromptGenerator } from '../components/features/MetapromptGenerator';
 import { useMetapromptsStore } from '../stores/useMetapromptsStore';
 import { useSettingsStore } from '../stores/useSettingsStore';
 import { v4 as uuidv4 } from 'uuid';
@@ -12,6 +13,7 @@ const Metaprompts: React.FC = () => {
   const { settings, updateSettings } = useSettingsStore();
   const [editingId, setEditingId] = useState<string | null>(null);
   const [showEditor, setShowEditor] = useState(false);
+  const [showGenerator, setShowGenerator] = useState(false);
 
   useEffect(() => {
     loadMetaprompts();
@@ -40,6 +42,34 @@ const Metaprompts: React.FC = () => {
   const handleCreate = () => {
     setEditingId(null);
     setShowEditor(true);
+    setShowGenerator(false);
+  };
+
+  const handleGenerate = () => {
+    setShowGenerator(true);
+    setShowEditor(false);
+    setEditingId(null);
+  };
+
+  const handleGenerated = async (name: string, description: string, content: string) => {
+    const newMetaprompt: Metaprompt = {
+      id: uuidv4(),
+      name,
+      description,
+      content,
+      isDefault: false,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    };
+    
+    await saveMetaprompt(newMetaprompt);
+    await loadMetaprompts();
+    setShowGenerator(false);
+    
+    // Optional: Automatisch aktivieren
+    if (confirm('Metaprompt wurde erstellt. Möchtest du ihn jetzt aktivieren?')) {
+      await handleSetActive(newMetaprompt.id);
+    }
   };
 
   const handleEdit = (id: string) => {
@@ -73,16 +103,33 @@ const Metaprompts: React.FC = () => {
     );
   }
 
+  if (showGenerator) {
+    return (
+      <div className="p-6">
+        <MetapromptGenerator
+          onGenerated={handleGenerated}
+          onCancel={() => setShowGenerator(false)}
+        />
+      </div>
+    );
+  }
+
   return (
     <div className="p-6 space-y-6">
       <div className="flex items-center justify-between">
         <div>
           <h2 className="text-2xl font-bold text-text-primary mb-2">Metaprompts</h2>
           <p className="text-text-secondary">
-            Verwalte deine Metaprompts für die Prompt-Optimierung
+            Metaprompts sind Vorlagen, die definieren, wie normale Prompts optimiert werden sollen. 
+            Erstelle mehrere Vorlagen und aktiviere sie nach Bedarf.
           </p>
         </div>
-        <Button onClick={handleCreate}>Neuer Metaprompt</Button>
+        <div className="flex space-x-2">
+          <Button variant="secondary" onClick={handleGenerate}>
+            Mit KI generieren
+          </Button>
+          <Button onClick={handleCreate}>Manuell erstellen</Button>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 gap-4">

@@ -37,18 +37,21 @@ export const ApiKeyForm: React.FC<ApiKeyFormProps> = ({ provider, providerName }
 
     try {
       // Validieren
-      const isValid = await validateApiKey(provider, key);
+      const isValid = await validateApiKey(provider, key.trim());
       if (!isValid) {
-        setError('API-Key ist ungültig');
+        setError('API-Key ist ungültig oder konnte nicht validiert werden. Bitte prüfe:\n- Der Key beginnt mit "sk-ant-" für Claude\n- Keine Leerzeichen vor/nach dem Key\n- Der Key ist in deinem Anthropic Account aktiv');
         setLoading(false);
         return;
       }
 
       // Speichern
-      await setApiKey(provider, key);
+      await setApiKey(provider, key.trim());
       setError('');
+      alert('API-Key erfolgreich gespeichert und validiert!');
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Fehler beim Speichern');
+      const errorMsg = err instanceof Error ? err.message : 'Fehler beim Speichern';
+      setError(`Validierungsfehler: ${errorMsg}`);
+      console.error('API Key validation error:', err);
     } finally {
       setLoading(false);
     }

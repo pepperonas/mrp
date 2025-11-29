@@ -35,11 +35,25 @@ export const useApiKeysStore = create<ApiKeysStore>((set, get) => ({
           ...state.statuses,
           [provider]: {
             provider,
-            isValid: !!key,
+            isValid: false, // Wird durch checkStatus aktualisiert
             isConfigured: !!key,
           },
         },
       }));
+      
+      // Wenn Key vorhanden, validiere ihn
+      if (key) {
+        const isValid = await window.mrp.validateApiKey(provider, key);
+        set((state) => ({
+          statuses: {
+            ...state.statuses,
+            [provider]: {
+              ...state.statuses[provider],
+              isValid,
+            },
+          },
+        }));
+      }
     } catch (error) {
       console.error(`Failed to load API key for ${provider}:`, error);
     }
@@ -74,12 +88,22 @@ export const useApiKeysStore = create<ApiKeysStore>((set, get) => ({
           [provider]: {
             ...state.statuses[provider],
             isValid,
+            isConfigured: true,
           },
         },
       }));
       return isValid;
     } catch (error) {
       console.error(`Failed to validate API key for ${provider}:`, error);
+      set((state) => ({
+        statuses: {
+          ...state.statuses,
+          [provider]: {
+            ...state.statuses[provider],
+            isValid: false,
+          },
+        },
+      }));
       return false;
     }
   },

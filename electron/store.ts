@@ -17,7 +17,7 @@ const store = new Store<{
       activeProvider: 'openai',
       defaultModel: {
         openai: 'gpt-4o',
-        anthropic: 'claude-3-5-sonnet-20241022',
+        anthropic: 'claude-3-5-sonnet-20241022', // Fallback: claude-3-5-sonnet-20240229
         grok: 'grok-2-latest',
         gemini: 'gemini-1.5-pro-latest',
       },

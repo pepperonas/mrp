@@ -66,7 +66,7 @@ export interface OptimizationHistory {
 
 export const DEFAULT_MODELS: Record<Provider, string> = {
   openai: 'gpt-4o',
-  anthropic: 'claude-3-5-sonnet-20241022',
+  anthropic: 'claude-3-5-sonnet-20241022', // Falls nicht verfügbar, wird claude-3-5-sonnet-20240229 verwendet
   grok: 'grok-2-latest',
   gemini: 'gemini-1.5-pro-latest',
 };
@@ -80,7 +80,7 @@ export const DEFAULT_METAPROMPT = `Du bist ein Experte für Prompt Engineering. 
 4. Entferne Mehrdeutigkeiten
 5. Strukturiere komplexe Anfragen in Schritte
 
-## Eingabe-Prompt:
+## Zu optimierender Prompt:
 {user_prompt}
 
 ## Aufgabe:

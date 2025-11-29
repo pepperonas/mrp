@@ -5,6 +5,7 @@ import { registerGlobalShortcut, unregisterAllShortcuts } from './shortcuts';
 import { getSettings, setSettings, getApiKey, setApiKey, getMetaprompts, saveMetaprompt, deleteMetaprompt, getHistory, addHistory } from './store';
 import { readClipboard, writeClipboard } from './clipboard';
 import { optimizePrompt } from './optimizer';
+import { validateApiKeyDirect } from './validateApiKey';
 import { DEFAULT_METAPROMPT } from '../src/types';
 import { v4 as uuidv4 } from 'uuid';
 import type { Settings, Metaprompt, Provider } from '../src/types';
@@ -131,26 +132,22 @@ ipcMain.handle('apiKey:validate', async (_event, provider: Provider, key: string
   setApiKey(provider, key);
   
   try {
-    // Test-Request durchführen
-    const result = await optimizePrompt({
-      userPrompt: 'Test',
-      metaprompt: 'Gib nur "OK" zurück.',
-      provider,
-      model: getSettings().defaultModel[provider],
-      maxTokens: 10,
-      temperature: 0.7,
-    });
+    // Direkte Validierung ohne Optimizer-Umweg
+    const validation = await validateApiKeyDirect(provider, key);
     
-    // Alten Key wiederherstellen falls Validierung fehlschlägt
-    if (!result.success) {
+    if (!validation.valid) {
+      // Alten Key wiederherstellen falls Validierung fehlschlägt
       if (oldKey) {
         setApiKey(provider, oldKey);
       }
+      console.error(`API Key validation failed for ${provider}:`, validation.error);
       return false;
     }
     
     return true;
-  } catch {
+  } catch (error) {
+    console.error('API Key validation error:', error);
+    // Alten Key wiederherstellen
     if (oldKey) {
       setApiKey(provider, oldKey);
     }
