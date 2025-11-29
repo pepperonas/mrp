@@ -3,7 +3,6 @@ import { useSettingsStore } from './stores/useSettingsStore';
 import { useApiKeysStore } from './stores/useApiKeysStore';
 import { useMetapromptsStore } from './stores/useMetapromptsStore';
 import Dashboard from './pages/Dashboard';
-import ApiKeys from './pages/ApiKeys';
 import Metaprompts from './pages/Metaprompts';
 import Settings from './pages/Settings';
 import History from './pages/History';
@@ -11,7 +10,7 @@ import Header from './components/layout/Header';
 import StatusBar from './components/layout/StatusBar';
 import type { Provider } from './types';
 
-type Page = 'dashboard' | 'api-keys' | 'metaprompts' | 'settings' | 'history';
+type Page = 'dashboard' | 'metaprompts' | 'settings' | 'history';
 
 function App() {
   const [currentPage, setCurrentPage] = useState<Page>('dashboard');
@@ -48,8 +47,6 @@ function App() {
     switch (currentPage) {
       case 'dashboard':
         return <Dashboard />;
-      case 'api-keys':
-        return <ApiKeys />;
       case 'metaprompts':
         return <Metaprompts />;
       case 'settings':

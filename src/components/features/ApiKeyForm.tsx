@@ -21,8 +21,12 @@ export const ApiKeyForm: React.FC<ApiKeyFormProps> = ({ provider, providerName }
   }, [provider]);
 
   React.useEffect(() => {
-    if (keys[provider]) {
-      setKey(keys[provider] || '');
+    // Nur setzen wenn Key vorhanden ist, sonst leer lassen
+    const storedKey = keys[provider];
+    if (storedKey) {
+      setKey(storedKey);
+    } else {
+      setKey(''); // Leer lassen wenn nicht konfiguriert
     }
   }, [keys, provider]);
 
@@ -57,20 +61,34 @@ export const ApiKeyForm: React.FC<ApiKeyFormProps> = ({ provider, providerName }
     }
   };
 
-  const status = keys[provider] ? '✓ Konfiguriert' : '○ Nicht konfiguriert';
+  const { statuses } = useApiKeysStore();
+  const status = statuses[provider];
+  const isValid = status?.isValid || false;
+  const isConfigured = status?.isConfigured || false;
 
   return (
     <Card title={providerName}>
       <div className="space-y-4">
         <div className="flex items-center justify-between">
-          <span className="text-sm text-text-secondary">Status: {status}</span>
+          <div className="flex items-center space-x-2">
+            <div className={`w-3 h-3 rounded-full ${
+              isValid 
+                ? 'bg-green-500 shadow-lg shadow-green-500/50' 
+                : isConfigured 
+                ? 'bg-red-500' 
+                : 'bg-gray-500'
+            }`}></div>
+            <span className="text-sm text-text-secondary">
+              Status: {isValid ? 'Gültig' : isConfigured ? 'Ungültig' : 'Nicht konfiguriert'}
+            </span>
+          </div>
         </div>
         <Input
           type="password"
           label="API-Key"
           value={key}
           onChange={(e) => setKey(e.target.value)}
-          placeholder={`${providerName} API-Key eingeben...`}
+          placeholder={keys[provider] ? `${providerName} API-Key eingeben...` : "API-Key eingeben"}
           error={error}
         />
         <Button

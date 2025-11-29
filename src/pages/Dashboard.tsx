@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { Card } from '../components/ui/Card';
 import { Button } from '../components/ui/Button';
+import { Select } from '../components/ui/Select';
 import { useSettingsStore } from '../stores/useSettingsStore';
 import { useApiKeysStore } from '../stores/useApiKeysStore';
 import { useMetapromptsStore } from '../stores/useMetapromptsStore';
@@ -16,14 +17,15 @@ const Dashboard: React.FC = () => {
     loadMetaprompts();
     
     // Lade alle API-Keys und prüfe deren Status
-    (['openai', 'anthropic', 'grok', 'gemini'] as const).forEach(async (provider) => {
-      await loadApiKey(provider);
-      // Prüfe Status wenn Key vorhanden
-      if (keys[provider]) {
-        await checkStatus(provider);
+    const loadAllKeys = async () => {
+      const providers: Array<'openai' | 'anthropic' | 'grok' | 'gemini'> = ['openai', 'anthropic', 'grok', 'gemini'];
+      for (const provider of providers) {
+        await loadApiKey(provider);
       }
-    });
-  }, []);
+    };
+    
+    loadAllKeys();
+  }, [loadApiKey]);
 
   const activeMetaprompt = metaprompts.find(m => m.id === settings?.activeMetapromptId) ||
                            metaprompts.find(m => m.isDefault) ||
@@ -63,6 +65,15 @@ const Dashboard: React.FC = () => {
     await useSettingsStore.getState().updateSettings({ activeProvider: provider });
   };
 
+  const handleMetapromptChange = async (metapromptId: string) => {
+    await useSettingsStore.getState().updateSettings({ activeMetapromptId: metapromptId });
+    // Optional: Auch als Standard setzen
+    const selectedMetaprompt = metaprompts.find(m => m.id === metapromptId);
+    if (selectedMetaprompt) {
+      await useMetapromptsStore.getState().setDefault(metapromptId);
+    }
+  };
+
   const providerNames: Record<Provider, string> = {
     openai: 'OpenAI',
     anthropic: 'Claude',
@@ -70,27 +81,50 @@ const Dashboard: React.FC = () => {
     gemini: 'Gemini',
   };
 
+  // Metaprompt-Optionen für Dropdown
+  const metapromptOptions = metaprompts.map(mp => ({
+    value: mp.id,
+    label: `${mp.name}${mp.isDefault ? ' (Standard)' : ''}`,
+  }));
+
   return (
     <div className="p-6 space-y-6">
       <Card title="Aktive Metaprompt-Vorlage">
-        {activeMetaprompt ? (
-          <div>
-            <h4 className="font-semibold text-text-primary mb-2">{activeMetaprompt.name}</h4>
-            {activeMetaprompt.description && (
-              <p className="text-sm text-text-secondary mb-2">{activeMetaprompt.description}</p>
-            )}
-            <p className="text-xs text-text-secondary mt-2">
-              Diese Vorlage wird verwendet, um deine Prompts zu optimieren.
-            </p>
-          </div>
-        ) : (
-          <div>
-            <p className="text-text-secondary mb-2">Kein Metaprompt aktiviert</p>
-            <p className="text-xs text-text-secondary">
-              Gehe zu "Metaprompts", um eine Vorlage zu aktivieren.
-            </p>
-          </div>
-        )}
+        <div className="space-y-4">
+          {metaprompts.length > 0 ? (
+            <>
+              <Select
+                label="Metaprompt auswählen"
+                options={metapromptOptions}
+                value={settings?.activeMetapromptId || metaprompts.find(m => m.isDefault)?.id || metaprompts[0]?.id || ''}
+                onChange={(e) => handleMetapromptChange(e.target.value)}
+              />
+              {activeMetaprompt && (
+                <div className="mt-4 pt-4 border-t border-bg-secondary">
+                  <h4 className="font-semibold text-text-primary mb-2">{activeMetaprompt.name}</h4>
+                  {activeMetaprompt.description && (
+                    <p className="text-sm text-text-secondary mb-2">{activeMetaprompt.description}</p>
+                  )}
+                  <div className="mt-3">
+                    <p className="text-xs text-text-secondary mb-1 font-medium">Metaprompt-Inhalt:</p>
+                    <p className="text-xs text-text-secondary font-mono bg-bg-primary p-2 rounded border border-bg-secondary max-h-32 overflow-y-auto">
+                      {activeMetaprompt.content.length > 300 
+                        ? `${activeMetaprompt.content.substring(0, 300)}...` 
+                        : activeMetaprompt.content}
+                    </p>
+                  </div>
+                </div>
+              )}
+            </>
+          ) : (
+            <div>
+              <p className="text-text-secondary mb-2">Keine Metaprompts vorhanden</p>
+              <p className="text-xs text-text-secondary">
+                Gehe zu "Metaprompts", um eine Vorlage zu erstellen.
+              </p>
+            </div>
+          )}
+        </div>
       </Card>
 
       <Card title="Provider-Status & Auswahl">

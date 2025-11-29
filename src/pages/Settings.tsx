@@ -2,11 +2,17 @@ import React, { useEffect } from 'react';
 import { Card } from '../components/ui/Card';
 import { Input } from '../components/ui/Input';
 import { Button } from '../components/ui/Button';
+import { Tabs } from '../components/ui/Tabs';
+import { ApiKeyForm } from '../components/features/ApiKeyForm';
+import { ShortcutInput } from '../components/features/ShortcutInput';
 import { useSettingsStore } from '../stores/useSettingsStore';
+import type { Provider } from '../types';
 
 const Settings: React.FC = () => {
   const { settings, loadSettings, updateSettings } = useSettingsStore();
   const [localSettings, setLocalSettings] = React.useState(settings);
+  const [activeTab, setActiveTab] = React.useState<'general' | 'api-keys'>('general');
+  const [apiKeyTab, setApiKeyTab] = React.useState<Provider>('openai');
 
   useEffect(() => {
     loadSettings();
@@ -36,16 +42,41 @@ const Settings: React.FC = () => {
     }
   };
 
+  const providerNames: Record<Provider, string> = {
+    openai: 'OpenAI (GPT-4o, GPT-4-Turbo)',
+    anthropic: 'Anthropic (Claude 3.5 Sonnet, Claude 3 Opus)',
+    grok: 'xAI (Grok-2)',
+    gemini: 'Google (Gemini 1.5 Pro, Gemini 1.5 Flash)',
+  };
+
+  const apiKeyTabs = [
+    { id: 'openai', label: 'OpenAI' },
+    { id: 'anthropic', label: 'Claude' },
+    { id: 'grok', label: 'Grok' },
+    { id: 'gemini', label: 'Gemini' },
+  ];
+
   return (
     <div className="p-6 space-y-6">
       <div>
         <h2 className="text-2xl font-bold text-text-primary mb-2">Einstellungen</h2>
         <p className="text-text-secondary">
-          Konfiguriere das Verhalten der Anwendung
+          Konfiguriere das Verhalten der Anwendung und verwalte deine API-Keys
         </p>
       </div>
 
-      <Card title="Allgemein">
+      <Tabs 
+        tabs={[
+          { id: 'general', label: 'Allgemein' },
+          { id: 'api-keys', label: 'API-Keys' },
+        ]} 
+        activeTab={activeTab} 
+        onTabChange={(id) => setActiveTab(id as 'general' | 'api-keys')} 
+      />
+
+      {activeTab === 'general' && (
+        <>
+          <Card title="Allgemein">
         <div className="space-y-4">
           <div className="flex items-center justify-between">
             <div>
@@ -74,17 +105,21 @@ const Settings: React.FC = () => {
         </div>
       </Card>
 
-      <Card title="Shortcut">
+      <Card title="Globaler Shortcut">
         <div className="space-y-4">
-          <Input
-            label="Globaler Shortcut"
+          <ShortcutInput
+            label="Tastenkombination"
             value={localSettings.globalShortcut}
-            onChange={(e) => handleChange('globalShortcut', e.target.value)}
-            placeholder="CommandOrControl+Shift+M"
+            onChange={(shortcut) => handleChange('globalShortcut', shortcut)}
           />
-          <p className="text-xs text-text-secondary">
-            Format: CommandOrControl+Shift+M (für macOS/Windows kompatibel)
-          </p>
+          <div className="mt-4 p-3 bg-bg-primary rounded-lg border border-bg-secondary">
+            <p className="text-xs text-text-secondary mb-2">
+              <strong>Aktueller Shortcut:</strong> {localSettings.globalShortcut}
+            </p>
+            <p className="text-xs text-text-secondary">
+              Dieser Shortcut wird global registriert und funktioniert auch wenn die App nicht im Fokus ist.
+            </p>
+          </div>
         </div>
       </Card>
 
@@ -110,9 +145,25 @@ const Settings: React.FC = () => {
         </div>
       </Card>
 
-      <Button onClick={handleSave} className="w-full">
-        Einstellungen speichern
-      </Button>
+          <Button onClick={handleSave} className="w-full">
+            Einstellungen speichern
+          </Button>
+        </>
+      )}
+
+      {activeTab === 'api-keys' && (
+        <>
+          <Card>
+            <div className="mb-4">
+              <p className="text-sm text-text-secondary">
+                Konfiguriere deine API-Keys für die verschiedenen Anbieter. Die Keys werden verschlüsselt gespeichert.
+              </p>
+            </div>
+            <Tabs tabs={apiKeyTabs} activeTab={apiKeyTab} onTabChange={(id) => setApiKeyTab(id as Provider)} />
+          </Card>
+          <ApiKeyForm provider={apiKeyTab} providerName={providerNames[apiKeyTab]} />
+        </>
+      )}
     </div>
   );
 };
