@@ -51,35 +51,51 @@ jobs:
         id: find_artifacts
         shell: bash
         run: |
+          echo "🔍 Searching for artifacts in dist/ directory..."
+          ls -lah dist/ || echo "⚠️ dist/ directory not found, listing current directory:"
+          ls -lah || true
+          
           if [ "${{ matrix.platform }}" == "mac" ]; then
+            echo "🔍 Looking for macOS DMG files..."
             ARTIFACT=$(find dist -name "MRP-*-macOS.dmg" -type f | head -1)
+            if [ -z "$ARTIFACT" ]; then
+              echo "❌ Error: No macOS DMG found"
+              find dist -type f -name "*.dmg" || echo "No .dmg files found"
+              exit 1
+            fi
+            echo "✅ Found macOS artifact: $ARTIFACT"
+            echo "artifact=$ARTIFACT" >> $GITHUB_OUTPUT
           elif [ "${{ matrix.platform }}" == "win" ]; then
+            echo "🔍 Looking for Windows Setup files..."
             ARTIFACT=$(find dist -name "MRP-*-Windows-Setup.exe" -type f | head -1)
+            if [ -z "$ARTIFACT" ]; then
+              echo "❌ Error: No Windows Setup found"
+              find dist -type f -name "*.exe" || echo "No .exe files found"
+              exit 1
+            fi
+            echo "✅ Found Windows artifact: $ARTIFACT"
+            echo "artifact=$ARTIFACT" >> $GITHUB_OUTPUT
           elif [ "${{ matrix.platform }}" == "linux" ]; then
-            # Linux hat mehrere Artefakte (deb, rpm, AppImage)
-            # Finde alle Linux-Artefakte und speichere sie in einer Datei
+            echo "🔍 Looking for Linux artifacts (deb, rpm, AppImage)..."
             ARTIFACTS=$(find dist -type f \( -name "MRP-*-Linux.deb" -o -name "MRP-*-Linux.rpm" -o -name "MRP-*-x86_64.AppImage" \))
             if [ -z "$ARTIFACTS" ]; then
-              echo "Error: No Linux artifacts found"
+              echo "❌ Error: No Linux artifacts found"
+              echo "Looking for any Linux files:"
+              find dist -type f \( -name "*.deb" -o -name "*.rpm" -o -name "*.AppImage" \) || echo "No Linux package files found"
               ls -la dist/ || echo "dist directory not found"
               exit 1
             fi
+            echo "✅ Found Linux artifacts:"
+            echo "$ARTIFACTS"
             # Speichere Pfade in einer temporären Datei für multiline output
             echo "$ARTIFACTS" > /tmp/linux_artifacts.txt
             # Verwende die Datei für multiline output
             echo "artifact<<EOF" >> $GITHUB_OUTPUT
             cat /tmp/linux_artifacts.txt >> $GITHUB_OUTPUT
             echo "EOF" >> $GITHUB_OUTPUT
-            echo "Found Linux artifacts:"
-            echo "$ARTIFACTS"
           else
-            if [ -z "$ARTIFACT" ]; then
-              echo "Error: No artifact found for ${{ matrix.platform }}"
-              ls -la dist/ || echo "dist directory not found"
-              exit 1
-            fi
-            echo "artifact=$ARTIFACT" >> $GITHUB_OUTPUT
-            echo "Found artifact: $ARTIFACT"
+            echo "❌ Error: Unknown platform ${{ matrix.platform }}"
+            exit 1
           fi
 
       - name: Upload artifacts
