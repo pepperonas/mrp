@@ -43,7 +43,7 @@ nsis:
 mac:
   target:
     - target: dmg
-      arch: [x64, arm64]  # Universal Build für Intel und Apple Silicon
+      arch: [arm64]  # Apple Silicon (Intel Macs können mit Rosetta 2 ausführen)
   icon: resources/icon.icns
   category: public.app-category.productivity
   extendInfo:
@@ -63,6 +63,7 @@ mac:
 dmg:
   title: "MRP ${version}"
   artifactName: "MRP-${version}-macOS.dmg"
+  format: APFS  # Explizit APFS für Apple Silicon Kompatibilität
   contents:
     - x: 130
       y: 220
