@@ -1,5 +1,28 @@
 # Changelog
 
+## [1.1.6] - 2025-11-30
+
+### Hinzugefügt
+- **Installer-Pakete für alle Plattformen**:
+  - **Windows**: NSIS One-Click Installer (`.exe`) - Automatische Installation ohne Schritt-für-Schritt-Bestätigungen
+  - **macOS**: DMG Installer - Universal Build für Intel und Apple Silicon
+  - **Linux**: 
+    - DEB Package für Debian/Ubuntu
+    - RPM Package für Fedora/RedHat
+    - AppImage für portable Nutzung
+- **Automatisierte GitHub Releases**: Alle Installer werden automatisch bei jedem Release-Tag erstellt und auf GitHub veröffentlicht
+- **IMPORTANT_FILES.md**: Dokumentation aller wichtigen Dateien, die nicht gelöscht werden sollten
+
+### Geändert
+- **Windows Build**: Von portable `.exe` zu NSIS Installer gewechselt
+- **Linux Build**: Zusätzlich zu AppImage werden jetzt auch DEB und RPM Pakete erstellt
+- **GitHub Actions Workflow**: Aktualisiert für automatische Erstellung aller Installer-Pakete
+
+### Verbessert
+- **Installation**: Einfacheres Installieren auf allen Plattformen durch native Installer
+- **Windows**: Desktop- und Startmenü-Verknüpfungen werden automatisch erstellt
+- **Dokumentation**: Umfassende Installationsanleitungen für alle Plattformen
+
 ## [1.0.3] - 2025-01-29
 
 ### Behoben

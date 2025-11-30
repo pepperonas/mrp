@@ -1,6 +1,19 @@
 # Quick Start Guide
 
-## Installation & Setup
+## Installation
+
+### Für Endbenutzer
+
+Lade die neueste Version von [GitHub Releases](https://github.com/pepperonas/mrp/releases) herunter und installiere sie für dein Betriebssystem:
+
+- **macOS**: `MRP-{version}-macOS.dmg` - Öffne DMG und ziehe App nach Applications
+- **Windows**: `MRP-{version}-Windows-Setup.exe` - Führe Setup aus (One-Click Installation)
+- **Linux**: 
+  - `MRP-{version}-Linux.deb` (Debian/Ubuntu) - `sudo dpkg -i MRP-*.deb`
+  - `MRP-{version}-Linux.rpm` (Fedora/RedHat) - `sudo rpm -i MRP-*.rpm`
+  - `MRP-{version}-x86_64.AppImage` (Portable) - `chmod +x MRP-*.AppImage && ./MRP-*.AppImage`
+
+### Für Entwickler
 
 1. **Dependencies installieren:**
    ```bash
@@ -9,7 +22,7 @@
 
 2. **Entwicklung starten:**
    ```bash
-   npm run electron:dev
+   npm run dev
    ```
 
 ## Erste Schritte

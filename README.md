@@ -18,7 +18,42 @@ MRP verwendet **Metaprompts** als Vorlagen, um normale Prompts zu optimieren. Ei
 - ✅ Clipboard-Workflow: Prompt kopieren → Shortcut drücken → Optimiertes Ergebnis in Zwischenablage
 - ✅ History der letzten 20 Optimierungen
 - ✅ Dunkles Theme mit modernem Design
-- ✅ Portable Builds für Windows, macOS und Linux
+- ✅ Installer-Pakete für alle Plattformen (Windows NSIS, macOS DMG, Linux DEB/RPM/AppImage)
+
+## Installation
+
+### Für Endbenutzer
+
+Lade die neueste Version von [GitHub Releases](https://github.com/pepperonas/mrp/releases) herunter:
+
+#### macOS
+1. Lade `MRP-{version}-macOS.dmg` herunter
+2. Öffne die DMG-Datei
+3. Ziehe `MRP.app` nach `Applications`
+4. Starte die App aus dem Applications-Ordner
+
+#### Windows
+1. Lade `MRP-{version}-Windows-Setup.exe` herunter
+2. Führe die Setup-Datei aus
+3. Folge dem Installationsassistenten (One-Click Installation)
+4. Die App wird automatisch im Startmenü und auf dem Desktop verlinkt
+
+#### Linux
+
+**Debian/Ubuntu:**
+1. Lade `MRP-{version}-Linux.deb` herunter
+2. Installation: `sudo dpkg -i MRP-*.deb`
+   - Oder: Doppelklick im Datei-Manager
+
+**Fedora/RedHat:**
+1. Lade `MRP-{version}-Linux.rpm` herunter
+2. Installation: `sudo rpm -i MRP-*.rpm`
+   - Oder: Doppelklick im Datei-Manager
+
+**AppImage (Portable):**
+1. Lade `MRP-{version}-x86_64.AppImage` herunter
+2. Mache die Datei ausführbar: `chmod +x MRP-*.AppImage`
+3. Starte die App: `./MRP-*.AppImage`
 
 ## Entwicklung
 
