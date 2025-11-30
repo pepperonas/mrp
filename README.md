@@ -1,6 +1,6 @@
 # Metaprompt
 
-![Metaprompt Banner](assets/mp-gh-banner.png)
+![Metaprompt Banner](assets/mp-gh-banner.jpg)
 
 ![Metaprompt Screenshot](assets/mp-screenshot.png)
 
@@ -35,7 +35,10 @@ Lade die neueste Version von [GitHub Releases](https://github.com/pepperonas/Met
 1. Lade `Metaprompt-{version}-macOS.dmg` herunter
 2. Öffne die DMG-Datei
 3. Ziehe `Metaprompt.app` nach `Applications`
-4. Starte die App aus dem Applications-Ordner
+4. **Wichtig**: Da die App nicht signiert ist, musst du macOS Gatekeeper umgehen:
+   - **Option 1 (Empfohlen)**: Rechtsklick auf `Metaprompt.app` → "Öffnen" → "Öffnen" bestätigen
+   - **Option 2**: Terminal-Befehl: `xattr -d com.apple.quarantine /Applications/Metaprompt.app`
+5. Starte die App aus dem Applications-Ordner
 
 #### Windows
 1. Lade `Metaprompt-{version}-Windows-Setup.exe` herunter

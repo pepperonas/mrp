@@ -59,6 +59,9 @@ mac:
     - "resources/icons/**/*"
   # Code-Signierung deaktivieren für Development Build
   identity: null
+  # Gatekeeper umgehen für nicht-signierte Apps
+  gatekeeperAssess: false
+  hardenedRuntime: false
   
 dmg:
   title: "Metaprompt ${version}"
