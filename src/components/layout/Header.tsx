@@ -10,38 +10,81 @@ interface HeaderProps {
 }
 
 const Header: React.FC<HeaderProps> = ({ currentPage, onPageChange, onAboutClick, onGuideClick }) => {
-  const pages: { id: Page; label: string; icon?: string }[] = [
-    { id: 'dashboard', label: 'Dashboard' },
-    { id: 'metaprompts', label: 'Metaprompts' },
-    { id: 'settings', label: 'Einstellungen' },
-    { id: 'history', label: 'Verlauf' },
+  const pages: { id: Page; label: string; icon: React.ReactNode }[] = [
+    { 
+      id: 'dashboard', 
+      label: 'Dashboard',
+      icon: (
+        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+        </svg>
+      )
+    },
+    { 
+      id: 'metaprompts', 
+      label: 'Metaprompts',
+      icon: (
+        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+        </svg>
+      )
+    },
+    { 
+      id: 'settings', 
+      label: 'Einstellungen',
+      icon: (
+        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+        </svg>
+      )
+    },
+    { 
+      id: 'history', 
+      label: 'Verlauf',
+      icon: (
+        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+      )
+    },
   ];
 
   return (
-    <header className="bg-bg-secondary border-b border-bg-primary py-4" style={{ 
+    <header className="bg-bg-secondary border-b border-bg-primary" style={{ 
       paddingLeft: '20px', 
       paddingRight: '80px',
-      paddingTop: '20px'
+      paddingTop: '16px',
+      paddingBottom: '16px'
     } as React.CSSProperties}>
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold text-text-primary flex-shrink-0">Metaprompt</h1>
-        <nav className="flex items-center space-x-4 flex-shrink-0">
+        <nav className="flex items-center space-x-2 flex-shrink-0">
           {pages.map((page) => (
             <button
               key={page.id}
               onClick={() => onPageChange(page.id)}
-              className={`px-4 py-2 rounded-lg text-sm font-medium transition-all whitespace-nowrap ${
+              className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-all whitespace-nowrap ${
                 currentPage === page.id
                   ? 'bg-brand text-white shadow-lg glow-brand'
                   : 'text-text-secondary hover:text-text-primary hover:bg-bg-primary'
               }`}
+              title={page.label}
             >
-              {page.label}
+              <span className={currentPage === page.id ? 'text-white' : 'text-current'}>
+                {page.icon}
+              </span>
+              <span>{page.label}</span>
             </button>
           ))}
+          
+          {/* Separator */}
+          <div className="w-px h-6 bg-bg-primary mx-1" />
+          
+          {/* Info and About buttons */}
           <button
             onClick={onGuideClick}
-            className="p-2 rounded-lg text-sm font-medium transition-all text-text-secondary hover:text-text-primary hover:bg-bg-primary"
+            className="p-2 rounded-lg transition-all text-text-secondary hover:text-text-primary hover:bg-bg-primary"
             title="Anleitung anzeigen"
           >
             <svg 
@@ -61,7 +104,7 @@ const Header: React.FC<HeaderProps> = ({ currentPage, onPageChange, onAboutClick
           </button>
           <button
             onClick={onAboutClick}
-            className="px-4 py-2 rounded-lg text-sm font-medium transition-all text-text-secondary hover:text-text-primary hover:bg-bg-primary"
+            className="px-3 py-2 rounded-lg text-sm font-medium transition-all text-text-secondary hover:text-text-primary hover:bg-bg-primary"
             title="Über Metaprompt"
           >
             Über
