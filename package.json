@@ -1,13 +1,33 @@
 {
   "name": "metaprompt",
   "version": "1.2.0",
-  "description": "Metaprompt - AI-powered prompt optimization tool",
-  "main": "dist-electron/main.js",
-  "author": "Martin Pfeffer | celox.io",
+  "description": "KI-gestützte Prompt-Optimierung mit 60+ Metaprompts und Multi-Provider-Unterstützung",
+  "author": "Martin Pfeffer <info@celox.io>",
   "license": "MIT",
-  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pepperonas/Metaprompt.git"
+  },
+  "bugs": {
+    "url": "https://github.com/pepperonas/Metaprompt/issues"
+  },
+  "homepage": "https://github.com/pepperonas/Metaprompt#readme",
+  "keywords": [
+    "prompt-optimization",
+    "ai",
+    "metaprompt",
+    "openai",
+    "anthropic",
+    "grok",
+    "gemini",
+    "electron",
+    "desktop-app"
+  ],
+  "main": "dist-electron/main.js",
+  "private": false,
   "productName": "Metaprompt",
   "scripts": {
+    "generate-icons": "node scripts/generate-icons.js",
     "start": "vite",
     "dev": "vite",
     "build": "vite build",

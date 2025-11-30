@@ -24,7 +24,7 @@ Metaprompt verwendet **Metaprompts** als Vorlagen, um normale Prompts zu optimie
 
 ### Für Endbenutzer
 
-Lade die neueste Version von [GitHub Releases](https://github.com/pepperonas/metaprompt/releases) herunter:
+Lade die neueste Version von [GitHub Releases](https://github.com/pepperonas/Metaprompt/releases) herunter:
 
 #### macOS
 1. Lade `Metaprompt-{version}-macOS.dmg` herunter
@@ -145,51 +145,69 @@ Metaprompts sind Vorlagen, die definieren, wie Prompts optimiert werden sollen:
 ## Projektstruktur
 
 ```
-mrp/
-├── electron/                    # Electron Main Process (TypeScript Source)
-│   ├── main.ts                  # Electron Entry Point
+metaprompt/
+├── .github/                    # GitHub Templates & Workflows
+│   ├── ISSUE_TEMPLATE/         # Issue Templates
+│   ├── PULL_REQUEST_TEMPLATE/  # PR Template
+│   └── workflows/              # CI/CD Workflows
+├── docs/                       # Dokumentation
+│   ├── APP_ICON.md            # Icon Design Guidelines
+│   ├── THEME.md               # Design System & Theme
+│   ├── VERSIONING.md          # Versioning Guidelines
+│   ├── META_TEMPLATES.md      # Metaprompt Templates
+│   ├── QUICKSTART.md          # Quick Start Guide
+│   └── IMPORTANT_FILES.md    # Important Files Overview
+├── electron/                   # Electron Main Process
+│   ├── main.ts                # Electron Entry Point
 │   ├── preload.ts             # Preload Script (IPC Bridge)
 │   ├── store.ts               # electron-store Configuration
 │   ├── tray.ts                # System Tray Integration
+│   ├── menu.ts                # Application Menu Bar
 │   ├── shortcuts.ts           # Global Shortcut Registration
 │   ├── clipboard.ts           # Clipboard Operations
 │   ├── notifications.ts       # Native Notifications
 │   ├── optimizer.ts           # Prompt Optimization Logic
-│   ├── validateApiKey.ts      # API Key Validation
-│   └── costTracking.ts       # Cost Tracking (optional)
-├── src/                        # React Frontend (TypeScript)
+│   ├── validateApiKey.ts       # API Key Validation
+│   └── costTracking.ts        # Cost Tracking
+├── resources/                  # App Assets
+│   ├── icons/                 # App Icons (various sizes)
+│   ├── icon.icns              # macOS Icon
+│   ├── icon.ico               # Windows Icon
+│   └── icon.png               # Linux Icon
+├── scripts/                    # Build & Utility Scripts
+│   └── generate-icons.js      # Icon Generation Script
+├── src/                        # React Frontend
 │   ├── main.tsx               # React Entry Point
 │   ├── App.tsx                # Root Component
-│   ├── components/            # UI Komponenten
+│   ├── components/            # UI Components
 │   │   ├── ui/                # Reusable UI Components
 │   │   ├── layout/            # Layout Components
 │   │   └── features/          # Feature Components
-│   ├── pages/                 # Seiten (Dashboard, ApiKeys, etc.)
-│   ├── stores/                 # Zustand Stores
-│   ├── services/               # API Services
-│   │   └── api/                # Provider-specific API Clients
-│   ├── types/                  # TypeScript Typen
-│   ├── utils/                  # Utility-Funktionen
-│   └── styles/                 # Global Styles (Tailwind)
-├── resources/                  # Icons & Assets
-│   ├── icons/                  # Icon-Assets (SVG, PNG in verschiedenen Größen)
-│   ├── icon.ico                # Windows Icon
-│   ├── icon.icns               # macOS Icon
-│   ├── icon.png                # Linux Icon
-│   └── Info.plist              # macOS App Configuration
-├── .github/                    # GitHub Configuration
-│   └── workflows/              # GitHub Actions
-│       └── release.yml         # Automated Release Workflow
-├── dist/                        # Build Output (Frontend)
-├── dist-electron/              # Electron Build Output (wird ignoriert)
-├── electron-builder.yml        # Electron Builder Configuration
-├── vite.config.ts              # Vite Configuration
-├── tsconfig.json               # TypeScript Configuration
-├── tsconfig.electron.json      # Electron-specific TypeScript Config
-├── tailwind.config.js          # Tailwind CSS Configuration
-├── postcss.config.js           # PostCSS Configuration
-├── package.json                # Project Dependencies & Scripts
-└── README.md                   # Diese Datei
+│   ├── pages/                 # Application Pages
+│   ├── stores/                 # Zustand State Management
+│   ├── services/              # API Services
+│   │   └── api/               # Provider-specific API Clients
+│   ├── types/                 # TypeScript Type Definitions
+│   ├── utils/                 # Utility Functions
+│   └── styles/                # Global Styles (Tailwind)
+├── .gitignore                 # Git Ignore Rules
+├── electron-builder.yml       # Electron Builder Config
+├── package.json               # Project Dependencies
+├── tsconfig.json              # TypeScript Config (Frontend)
+├── tsconfig.node.json         # TypeScript Config (Node/Electron)
+├── vite.config.ts             # Vite Build Config
+├── tailwind.config.js         # Tailwind CSS Config
+├── LICENSE                    # MIT License
+├── CONTRIBUTING.md            # Contribution Guidelines
+├── CHANGELOG.md               # Version Changelog
+├── README.md                  # Project Documentation
+├── package.json               # Project Dependencies & Scripts
+├── electron-builder.yml       # Electron Builder Config
+├── vite.config.ts             # Vite Build Config
+├── tsconfig.json              # TypeScript Config (Frontend)
+├── tsconfig.node.json         # TypeScript Config (Node/Electron)
+├── tailwind.config.js         # Tailwind CSS Config
+└── postcss.config.js          # PostCSS Config
 ```
 
 ### Wichtige Dateien (NICHT löschen!)
@@ -239,7 +257,18 @@ Die App verwendet **Semantische Versionierung** im Format `MAJOR.MINOR.PATCH`:
 - `1.1.0` → `1.1.1` → ... → `1.1.9` → `1.2.0`
 - `1.9.0` → `1.9.1` → ... → `1.9.9` → `2.0.0`
 
-**Wichtig:** Diese Richtlinien müssen bei jeder Versionserhöhung befolgt werden. Siehe auch [VERSIONING.md](./VERSIONING.md) für detaillierte Informationen.
+**Wichtig:** Diese Richtlinien müssen bei jeder Versionserhöhung befolgt werden. Siehe auch [docs/VERSIONING.md](./docs/VERSIONING.md) für detaillierte Informationen.
+
+## Dokumentation
+
+Weitere Dokumentation findest du im [docs/](./docs/) Verzeichnis:
+
+- [QUICKSTART.md](./docs/QUICKSTART.md) - Schnellstart-Anleitung
+- [THEME.md](./docs/THEME.md) - Design-System & Theme
+- [VERSIONING.md](./docs/VERSIONING.md) - Versionsrichtlinien
+- [META_TEMPLATES.md](./docs/META_TEMPLATES.md) - Metaprompt-Vorlagen
+- [APP_ICON.md](./docs/APP_ICON.md) - Icon-Design-Richtlinien
+- [IMPORTANT_FILES.md](./docs/IMPORTANT_FILES.md) - Wichtige Dateien-Übersicht
 
 ## Wichtige Hinweise
 

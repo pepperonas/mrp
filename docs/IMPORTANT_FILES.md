@@ -48,14 +48,19 @@ Diese Dateien sind kritisch für das Projekt und sollten **NIEMALS** gelöscht w
 ### Dokumentation
 - ✅ `README.md` - Hauptdokumentation
 - ✅ `CHANGELOG.md` - Versionshistorie
-- ✅ `QUICKSTART.md` - Schnellstart-Anleitung
-- ✅ `META_TEMPLATES.md` - Metaprompt-Dokumentation
-- ✅ `THEME.md` - Design-System Dokumentation
-- ✅ `VERSIONING.md` - Versionsrichtlinien
-- ✅ `APP_ICON.md` - Icon-Generierung Dokumentation
+- ✅ `LICENSE` - MIT License
+- ✅ `CONTRIBUTING.md` - Contribution Guidelines
+- ✅ `docs/QUICKSTART.md` - Schnellstart-Anleitung
+- ✅ `docs/META_TEMPLATES.md` - Metaprompt-Dokumentation
+- ✅ `docs/THEME.md` - Design-System Dokumentation
+- ✅ `docs/VERSIONING.md` - Versionsrichtlinien
+- ✅ `docs/APP_ICON.md` - Icon-Generierung Dokumentation
+- ✅ `docs/IMPORTANT_FILES.md` - Diese Datei
 
 ### GitHub & CI/CD
 - ✅ `.github/workflows/release.yml` - Automated Release Workflow
+- ✅ `.github/ISSUE_TEMPLATE/` - Issue Templates
+- ✅ `.github/PULL_REQUEST_TEMPLATE.md` - PR Template
 - ✅ `.gitignore` - Git Ignore Rules
 - ✅ `.npmrc` - npm Konfiguration
 
