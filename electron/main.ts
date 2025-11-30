@@ -270,12 +270,31 @@ ipcMain.handle('metaprompts:toggleFavorite', (_event, id: string) => {
 
 // Notifications
 ipcMain.handle('notification:show', async (_event, title: string, body: string, success: boolean = true) => {
-  if (Notification.isSupported()) {
-    new Notification({
-      title,
-      body,
-      urgency: success ? 'normal' : 'critical',
-    }).show();
+  try {
+    if (Notification.isSupported()) {
+      const notification = new Notification({
+        title,
+        body,
+        urgency: success ? 'normal' : 'critical',
+        silent: false,
+      });
+      
+      notification.show();
+      console.log(`[Main] Notification shown: ${title} - ${body}`);
+      
+      // Event-Handler für Debugging
+      notification.on('click', () => {
+        console.log('[Main] Notification clicked');
+        if (mainWindow) {
+          mainWindow.show();
+          mainWindow.focus();
+        }
+      });
+    } else {
+      console.warn('[Main] Notifications not supported on this platform');
+    }
+  } catch (error) {
+    console.error('[Main] Error showing notification:', error);
   }
 });
 
