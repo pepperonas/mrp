@@ -47,14 +47,15 @@
 ## [1.0.1] - 2025-11-29
 
 ### Hinzugefügt
-- **7 vorgefertigte Metaprompts**: Professionelle Metaprompts werden beim ersten Start automatisch erstellt
-  - Software-Entwicklung
-  - Kommunikation
-  - Datenanalyse
-  - Rechtssprechung
-  - Business
-  - Bildgenerierung
-  - Bildbearbeitung
+- **60+ vorgefertigte Metaprompts**: Professionelle Metaprompts werden beim ersten Start automatisch erstellt, organisiert in Kategorien:
+  - Entwicklung (Software, Frontend, Backend, API, DevOps, Testing, Code-Review, etc.)
+  - Kommunikation (Präsentationen, Berichte, Übersetzungen)
+  - Datenanalyse (ML, Statistik, Zeitreihen, Predictive Analytics, A/B-Testing, etc.)
+  - Business (Strategie, Projektmanagement, Finanzen, Verkauf, etc.)
+  - Marketing (Content, SEO, Social Media, E-Mail, Produktbeschreibungen, etc.)
+  - Recht (Verträge, Arbeitsrecht, DSGVO, Compliance, Markenrecht)
+  - Design (Bildgenerierung, UI/UX, Logo, Web, Video, 3D, Fotografie)
+  - Bildung, Kreativ, Lifestyle und mehr
 - **App-Icon**: Eigenes App-Logo für Tray und Dock
 - **Icon-Generierungs-Script**: Automatische Generierung von Icons in verschiedenen Formaten (ICO, ICNS, PNG)
 

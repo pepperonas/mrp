@@ -56,17 +56,18 @@ const onboardingSteps: OnboardingStep[] = [
           <strong>Metaprompts</strong> sind Vorlagen, die definieren, wie normale Prompts optimiert werden sollen.
         </p>
         <p className="text-text-secondary">
-          Die App kommt mit <strong>7 vorgefertigten Metaprompts</strong>:
+          Die App kommt mit <strong>60+ vorgefertigten Metaprompts</strong> in verschiedenen Kategorien:
         </p>
         <ul className="list-disc list-inside space-y-1 text-text-secondary ml-4">
-          <li>Standard Optimizer</li>
-          <li>Software-Entwicklung</li>
-          <li>Kommunikation</li>
-          <li>Datenanalyse</li>
-          <li>Rechtssprechung</li>
-          <li>Business</li>
-          <li>Bildgenerierung</li>
-          <li>Bildbearbeitung</li>
+          <li>Standard Optimizer (kann nicht gelöscht werden)</li>
+          <li>Entwicklung (Software, Frontend, Backend, API, DevOps, Testing, etc.)</li>
+          <li>Kommunikation (Präsentationen, Berichte, Übersetzungen)</li>
+          <li>Datenanalyse (ML, Statistik, Zeitreihen, Predictive Analytics, etc.)</li>
+          <li>Business (Strategie, Projektmanagement, Finanzen, Verkauf, etc.)</li>
+          <li>Marketing (Content, SEO, Social Media, E-Mail, etc.)</li>
+          <li>Recht (Verträge, Arbeitsrecht, DSGVO, Compliance, etc.)</li>
+          <li>Design (Bildgenerierung, UI/UX, Logo, Web, Video, 3D, etc.)</li>
+          <li>Bildung, Kreativ, Lifestyle und mehr</li>
         </ul>
         <p className="text-text-secondary">
           Du kannst auch eigene Metaprompts erstellen oder mit KI generieren lassen.

@@ -41,15 +41,19 @@ Lade die neueste Version von [GitHub Releases](https://github.com/pepperonas/mrp
 
 Metaprompts sind **Vorlagen**, die definieren, wie normale Prompts optimiert werden sollen:
 
-- **Vorgefertigte Metaprompts**: 7 professionelle Metaprompts werden beim ersten Start automatisch erstellt:
-  - Standard Optimizer (kann nicht gelöscht werden)
-  - Software-Entwicklung
-  - Kommunikation
-  - Datenanalyse
-  - Rechtssprechung
-  - Business
-  - Bildgenerierung
-  - Bildbearbeitung
+- **Vorgefertigte Metaprompts**: 60+ professionelle Metaprompts werden beim ersten Start automatisch erstellt, organisiert in verschiedenen Kategorien:
+  - **Standard Optimizer** (kann nicht gelöscht werden)
+  - **Entwicklung**: Software-Entwicklung, Frontend, Backend, API-Design, DevOps, Testing, Code-Review, Technische Dokumentation, Datenbank-Design
+  - **Kommunikation**: Präsentationen, Berichte, Übersetzungen
+  - **Datenanalyse**: Datenanalyse, Machine Learning, Statistik, Zeitreihen, Predictive Analytics, Datenbereinigung, A/B-Testing, Datenvisualisierung
+  - **Business**: Business-Strategie, Projektmanagement, Finanzanalyse, Kundenanalyse, Verkaufsstrategien, Business-Optimierung, Business-Plan-Erstellung, Strategische Planung
+  - **Marketing**: Content-Marketing, SEO, Social-Media, E-Mail-Marketing, Produktbeschreibungen, Werbetexte
+  - **Recht**: Rechtssprechung, Vertragsrecht, Arbeitsrecht, Datenschutz & DSGVO, Compliance, Markenrecht
+  - **Design**: Bildgenerierung, Bildbearbeitung, UI/UX-Design, Logo-Design, Web-Design, Grafik-Design, Video-Produktion, 3D-Modellierung, Fotografie
+  - **Bildung**: Lernmaterialien, Prüfungsfragen, Zusammenfassungen
+  - **Kreativ**: Kreatives Schreiben, Drehbücher, Songtexte
+  - **Lifestyle**: Rezepte, Reiseplanung, Fitness & Gesundheit, Persönliche Entwicklung
+  - **Visualisierung**: Mindmap-Erstellung, Datenvisualisierung (Charts)
 - **Neue Metaprompts erstellen**:
   - **Mit KI generieren**: Beschreibe einen Anwendungsfall (z.B. "Code-Generierung", "Kreatives Schreiben") und lass die KI eine passende Vorlage erstellen
   - **Manuell erstellen**: Erstelle eigene Metaprompts mit dem Editor

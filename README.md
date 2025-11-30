@@ -11,7 +11,7 @@ MRP verwendet **Metaprompts** als Vorlagen, um normale Prompts zu optimieren. Ei
 - ✅ Unterstützung für 4 AI-Anbieter: OpenAI, Anthropic (Claude), xAI (Grok), Google (Gemini)
 - ✅ Sichere API-Key-Verwaltung (verschlüsselt) mit visueller Status-Anzeige
 - ✅ Metaprompt-Verwaltung: Erstelle, bearbeite und aktiviere Metaprompt-Vorlagen
-- ✅ **7 vorgefertigte Metaprompts**: Software-Entwicklung, Kommunikation, Datenanalyse, Rechtssprechung, Business, Bildgenerierung, Bildbearbeitung
+- ✅ **60+ vorgefertigte Metaprompts**: Professionelle Metaprompts für verschiedene Anwendungsfälle (Software-Entwicklung, Kommunikation, Datenanalyse, Business, Marketing, Recht, Design, Bildung, Kreativ, Lifestyle und mehr)
 - ✅ **KI-generierte Metaprompts**: Lass die KI Metaprompts für dich erstellen
 - ✅ Global Shortcut für schnelle Optimierung (Standard: Ctrl+Shift+O / Cmd+Shift+O)
 - ✅ System Tray Integration mit App-Icon
@@ -109,15 +109,19 @@ Gehe zu "Einstellungen" → "API-Keys" und trage deine Keys für die gewünschte
 ### 2. Metaprompts einrichten
 Metaprompts sind Vorlagen, die definieren, wie Prompts optimiert werden sollen:
 
-- **Vorgefertigte Metaprompts**: 7 professionelle Metaprompts werden beim ersten Start automatisch erstellt:
-  - Standard Optimizer (kann nicht gelöscht werden)
-  - Software-Entwicklung
-  - Kommunikation
-  - Datenanalyse
-  - Rechtssprechung
-  - Business
-  - Bildgenerierung
-  - Bildbearbeitung
+- **Vorgefertigte Metaprompts**: 60+ professionelle Metaprompts werden beim ersten Start automatisch erstellt, organisiert in Kategorien:
+  - **Standard Optimizer** (kann nicht gelöscht werden)
+  - **Entwicklung**: Software-Entwicklung, Frontend, Backend, API-Design, DevOps, Testing, Code-Review, Technische Dokumentation, Datenbank-Design
+  - **Kommunikation**: Präsentationen, Berichte, Übersetzungen
+  - **Datenanalyse**: Datenanalyse, Machine Learning, Statistik, Zeitreihen, Predictive Analytics, Datenbereinigung, A/B-Testing, Datenvisualisierung
+  - **Business**: Business-Strategie, Projektmanagement, Finanzanalyse, Kundenanalyse, Verkaufsstrategien, Business-Optimierung, Business-Plan-Erstellung, Strategische Planung
+  - **Marketing**: Content-Marketing, SEO, Social-Media, E-Mail-Marketing, Produktbeschreibungen, Werbetexte
+  - **Recht**: Rechtssprechung, Vertragsrecht, Arbeitsrecht, Datenschutz & DSGVO, Compliance, Markenrecht
+  - **Design**: Bildgenerierung, Bildbearbeitung, UI/UX-Design, Logo-Design, Web-Design, Grafik-Design, Video-Produktion, 3D-Modellierung, Fotografie
+  - **Bildung**: Lernmaterialien, Prüfungsfragen, Zusammenfassungen
+  - **Kreativ**: Kreatives Schreiben, Drehbücher, Songtexte
+  - **Lifestyle**: Rezepte, Reiseplanung, Fitness & Gesundheit, Persönliche Entwicklung
+  - **Visualisierung**: Mindmap-Erstellung, Datenvisualisierung (Charts)
 - **Neue Metaprompts erstellen**: 
   - **KI-generiert**: Beschreibe einen Anwendungsfall (z.B. "Code-Generierung") und lass die KI ein Metaprompt erstellen
   - **Manuell**: Erstelle eigene Metaprompts mit dem Editor

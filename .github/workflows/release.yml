@@ -16,15 +16,15 @@ jobs:
           - os: macos-latest
             platform: mac
             artifact_name: MRP-*-macOS.dmg
-            build_command: npm run build && electron-builder --mac --publish never
+            build_command: npm run build && npx electron-builder --mac --publish never
           - os: windows-latest
             platform: win
             artifact_name: MRP-*-Windows-Setup.exe
-            build_command: npm run build && electron-builder --win --publish never
+            build_command: npm run build && npx electron-builder --win --publish never
           - os: ubuntu-latest
             platform: linux
             artifact_name: MRP-*-Linux.*
-            build_command: npm run build && electron-builder --linux --publish never
+            build_command: npm run build && npx electron-builder --linux --publish never
 
     steps:
       - name: Checkout code

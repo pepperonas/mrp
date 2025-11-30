@@ -98,15 +98,19 @@ interface Metaprompt {
 
 **Funktionen:**
 - CRUD-Operationen für Metaprompts
-- **7 vorgefertigte Metaprompts** werden beim ersten Start automatisch erstellt:
+- **60+ vorgefertigte Metaprompts** werden beim ersten Start automatisch erstellt, organisiert in Kategorien:
   - Standard Optimizer (kann nicht gelöscht werden)
-  - Software-Entwicklung
-  - Kommunikation
-  - Datenanalyse
-  - Rechtssprechung
-  - Business
-  - Bildgenerierung
-  - Bildbearbeitung
+  - Entwicklung: Software-Entwicklung, Frontend, Backend, API-Design, DevOps, Testing, Code-Review, Technische Dokumentation, Datenbank-Design
+  - Kommunikation: Präsentationen, Berichte, Übersetzungen
+  - Datenanalyse: Datenanalyse, Machine Learning, Statistik, Zeitreihen, Predictive Analytics, Datenbereinigung, A/B-Testing, Datenvisualisierung
+  - Business: Business-Strategie, Projektmanagement, Finanzanalyse, Kundenanalyse, Verkaufsstrategien, Business-Optimierung, Business-Plan-Erstellung, Strategische Planung
+  - Marketing: Content-Marketing, SEO, Social-Media, E-Mail-Marketing, Produktbeschreibungen, Werbetexte
+  - Recht: Rechtssprechung, Vertragsrecht, Arbeitsrecht, Datenschutz & DSGVO, Compliance, Markenrecht
+  - Design: Bildgenerierung, Bildbearbeitung, UI/UX-Design, Logo-Design, Web-Design, Grafik-Design, Video-Produktion, 3D-Modellierung, Fotografie
+  - Bildung: Lernmaterialien, Prüfungsfragen, Zusammenfassungen
+  - Kreativ: Kreatives Schreiben, Drehbücher, Songtexte
+  - Lifestyle: Rezepte, Reiseplanung, Fitness & Gesundheit, Persönliche Entwicklung
+  - Visualisierung: Mindmap-Erstellung, Datenvisualisierung (Charts)
 - KI-generierte Metaprompts: Lass die KI Metaprompts für einen bestimmten Anwendungsfall erstellen
 - Ein Metaprompt als "Standard" markierbar (nur der Standard Optimizer kann Standard sein)
 - Standard-Metaprompt kann nicht gelöscht oder bearbeitet werden
