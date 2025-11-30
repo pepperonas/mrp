@@ -41,15 +41,6 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Verify electron-builder installation
-        run: |
-          if [ ! -f "./node_modules/.bin/electron-builder" ]; then
-            echo "Error: electron-builder not found in node_modules"
-            ls -la node_modules/.bin/ | grep electron || echo "No electron binaries found"
-            exit 1
-          fi
-          echo "✅ electron-builder found at ./node_modules/.bin/electron-builder"
-
       - name: Build application
         run: ${{ matrix.build_command }}
         env:
