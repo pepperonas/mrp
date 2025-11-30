@@ -66,6 +66,30 @@ body {
   background: #3C3E4B;
 }
 
+/* Dialog Scrollable Areas - Always show scrollbar */
+.onboarding-scrollable::-webkit-scrollbar,
+.guide-scrollable::-webkit-scrollbar {
+  width: 10px;
+}
+
+.onboarding-scrollable::-webkit-scrollbar-track,
+.guide-scrollable::-webkit-scrollbar-track {
+  background: var(--bg-primary);
+  border-radius: 5px;
+}
+
+.onboarding-scrollable::-webkit-scrollbar-thumb,
+.guide-scrollable::-webkit-scrollbar-thumb {
+  background: var(--bg-secondary);
+  border-radius: 5px;
+  border: 2px solid var(--bg-primary);
+}
+
+.onboarding-scrollable::-webkit-scrollbar-thumb:hover,
+.guide-scrollable::-webkit-scrollbar-thumb:hover {
+  background: #3C3E4B;
+}
+
 /* Custom Utilities */
 @layer utilities {
   .glow-brand {

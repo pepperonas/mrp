@@ -192,7 +192,7 @@ export const GuideDialog: React.FC<GuideDialogProps> = ({ isOpen, onClose }) => 
         }
       }}
     >
-      <Card className="max-w-2xl w-full mx-4 min-h-[420px] max-h-[450px] flex flex-col">
+      <Card className="max-w-2xl w-full mx-4 min-h-[550px] max-h-[650px] flex flex-col">
         {/* Header - Fixed */}
         <div className="flex items-center justify-between px-6 py-4 border-b border-bg-primary flex-shrink-0">
           <div className="flex items-center space-x-3">
@@ -211,7 +211,13 @@ export const GuideDialog: React.FC<GuideDialogProps> = ({ isOpen, onClose }) => 
         </div>
 
         {/* Content - Scrollable */}
-        <div className="flex-1 overflow-y-auto px-6 py-4">
+        <div 
+          className="flex-1 overflow-y-auto px-6 py-4 guide-scrollable" 
+          style={{ 
+            scrollbarWidth: 'thin',
+            scrollbarColor: '#2C2E3B #1A1C27'
+          }}
+        >
           {step.content}
         </div>
 
