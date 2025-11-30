@@ -113,10 +113,14 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     if: startsWith(github.ref, 'refs/tags/v') || startsWith(github.ref_name, 'v')
+    permissions:
+      contents: write  # Required for creating releases
     
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Get version from tag
         id: get_version
@@ -147,7 +151,12 @@ jobs:
         run: |
           echo "Artifacts in dist/:"
           ls -lh dist/ || echo "No dist directory found"
+          echo ""
+          echo "Looking for all artifacts:"
           find dist -type f \( -name "*.dmg" -o -name "*.exe" -o -name "*.deb" -o -name "*.rpm" -o -name "*.AppImage" \) || echo "No build artifacts found"
+          echo ""
+          echo "AppImage files specifically:"
+          find dist -name "*.AppImage" -type f || echo "No AppImage files found"
 
       - name: Create Release
         uses: softprops/action-gh-release@v1
@@ -162,7 +171,7 @@ jobs:
             #### macOS
             - **Installer**: MRP-${{ steps.get_version.outputs.version }}-macOS.dmg
               - Öffne die DMG-Datei und ziehe MRP.app nach Applications
-              - Universal Build für Intel und Apple Silicon
+              - Apple Silicon (arm64) - Intel Macs können mit Rosetta 2 ausführen
             
             #### Windows
             - **Installer**: MRP-${{ steps.get_version.outputs.version }}-Windows-Setup.exe
@@ -185,7 +194,7 @@ jobs:
             dist/MRP-*-Windows-Setup.exe
             dist/MRP-*-Linux.deb
             dist/MRP-*-Linux.rpm
-            dist/MRP-*-x86_64.AppImage
+            dist/*.AppImage
           draft: false
           prerelease: false
         env:
