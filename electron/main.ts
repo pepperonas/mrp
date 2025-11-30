@@ -4,7 +4,7 @@ import { join } from 'path';
 import path from 'path';
 import { createTray, updateTrayMenu, destroyTray } from './tray';
 import { registerGlobalShortcut, unregisterAllShortcuts, registerMetapromptShortcuts } from './shortcuts';
-import { getSettings, setSettings, getApiKey, setApiKey, getMetaprompts, saveMetaprompt, deleteMetaprompt, getHistory, addHistory } from './store';
+import { getSettings, setSettings, getApiKey, setApiKey, getMetaprompts, saveMetaprompt, deleteMetaprompt, toggleFavorite, getHistory, addHistory } from './store';
 import { getCostsLast30Days } from './costTracking';
 import { calculateCost } from '../src/utils/costCalculator';
 import { readClipboard, writeClipboard } from './clipboard';
@@ -149,7 +149,9 @@ app.whenReady().then(() => {
       name: 'Standard Optimizer',
       description: 'Standard-Metaprompt für Prompt-Optimierung',
       content: DEFAULT_METAPROMPT,
+      category: undefined, // Standard-Metaprompt hat keine spezifische Kategorie
       isDefault: true,
+      isFavorite: false,
       createdAt: new Date(),
       updatedAt: new Date(),
     };
@@ -259,6 +261,10 @@ ipcMain.handle('metaprompts:delete', (_event, id: string) => {
   }
   
   deleteMetaprompt(id);
+  updateTrayMenu(mainWindow);
+});
+ipcMain.handle('metaprompts:toggleFavorite', (_event, id: string) => {
+  toggleFavorite(id);
   updateTrayMenu(mainWindow);
 });
 

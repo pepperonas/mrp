@@ -63,8 +63,36 @@ const createTrayMenu = (mainWindow: BrowserWindow | null): Menu => {
     },
   ]);
 
-  const metapromptMenu = Menu.buildFromTemplate(
-    metaprompts.map(mp => ({
+  // Favoriten und andere Metaprompts trennen
+  const favorites = metaprompts.filter(mp => mp.isFavorite);
+  const others = metaprompts.filter(mp => !mp.isFavorite);
+
+  const metapromptMenuItems: Electron.MenuItemConstructorOptions[] = [];
+
+  // Favoriten zuerst
+  if (favorites.length > 0) {
+    favorites.forEach(mp => {
+      metapromptMenuItems.push({
+        label: `⭐ ${mp.name}`,
+        type: 'radio',
+        checked: mp.id === activeMetaprompt?.id,
+        click: () => {
+          if (mainWindow && !mainWindow.isDestroyed()) {
+            mainWindow.webContents.send('metaprompt:change', mp.id);
+          }
+        },
+      });
+    });
+    
+    // Separator zwischen Favoriten und anderen
+    if (others.length > 0) {
+      metapromptMenuItems.push({ type: 'separator' });
+    }
+  }
+
+  // Andere Metaprompts
+  others.forEach(mp => {
+    metapromptMenuItems.push({
       label: mp.name,
       type: 'radio',
       checked: mp.id === activeMetaprompt?.id,
@@ -73,7 +101,11 @@ const createTrayMenu = (mainWindow: BrowserWindow | null): Menu => {
           mainWindow.webContents.send('metaprompt:change', mp.id);
         }
       },
-    }))
+    });
+  });
+
+  const metapromptMenu = Menu.buildFromTemplate(
+    metapromptMenuItems.length > 0 ? metapromptMenuItems : [{ label: 'Keine Metaprompts', enabled: false }]
   );
 
   return Menu.buildFromTemplate([

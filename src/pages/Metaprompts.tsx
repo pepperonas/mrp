@@ -1,6 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Card } from '../components/ui/Card';
 import { Button } from '../components/ui/Button';
+import { Input } from '../components/ui/Input';
+import { Select } from '../components/ui/Select';
 import { MetapromptEditor } from '../components/features/MetapromptEditor';
 import { MetapromptGenerator } from '../components/features/MetapromptGenerator';
 import { useMetapromptsStore } from '../stores/useMetapromptsStore';
@@ -9,17 +11,66 @@ import { v4 as uuidv4 } from 'uuid';
 import type { Metaprompt } from '../types';
 
 const Metaprompts: React.FC = () => {
-  const { metaprompts, loadMetaprompts, saveMetaprompt, deleteMetaprompt, setDefault } = useMetapromptsStore();
+  const { metaprompts, loadMetaprompts, saveMetaprompt, deleteMetaprompt, setDefault, toggleFavorite } = useMetapromptsStore();
   const { settings, updateSettings } = useSettingsStore();
   const [editingId, setEditingId] = useState<string | null>(null);
   const [showEditor, setShowEditor] = useState(false);
   const [showGenerator, setShowGenerator] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState<string>('all');
 
   useEffect(() => {
     loadMetaprompts();
   }, []);
 
   const editingMetaprompt = editingId ? metaprompts.find(m => m.id === editingId) : undefined;
+
+  // Kategorien aus Metaprompts extrahieren
+  const categories = useMemo(() => {
+    const cats = new Set<string>();
+    metaprompts.forEach(mp => {
+      if (mp.category) {
+        cats.add(mp.category);
+      }
+    });
+    return Array.from(cats).sort();
+  }, [metaprompts]);
+
+  // Gefilterte und sortierte Metaprompts
+  const filteredMetaprompts = useMemo(() => {
+    let filtered = [...metaprompts];
+
+    // Filter nach Kategorie
+    if (selectedCategory !== 'all') {
+      filtered = filtered.filter(mp => mp.category === selectedCategory);
+    }
+
+    // Filter nach Suche
+    if (searchQuery.trim()) {
+      const query = searchQuery.toLowerCase();
+      filtered = filtered.filter(mp => 
+        mp.name.toLowerCase().includes(query) ||
+        mp.description?.toLowerCase().includes(query) ||
+        mp.content.toLowerCase().includes(query)
+      );
+    }
+
+    // Sortierung: Favoriten zuerst, dann Standard, dann Rest
+    filtered.sort((a, b) => {
+      // Favoriten zuerst
+      if (a.isFavorite && !b.isFavorite) return -1;
+      if (!a.isFavorite && b.isFavorite) return 1;
+      
+      // Standard-Metaprompt zuerst (innerhalb der Favoriten)
+      if (a.isDefault && !b.isDefault) return -1;
+      if (!a.isDefault && b.isDefault) return 1;
+      
+      // Alphabetisch nach Name
+      return a.name.localeCompare(b.name);
+    });
+
+    return filtered;
+  }, [metaprompts, selectedCategory, searchQuery]);
 
   const handleSave = async (mp: Metaprompt) => {
     // Wenn neuer Metaprompt, ID generieren
@@ -154,18 +205,34 @@ const Metaprompts: React.FC = () => {
         </div>
       </div>
 
+      {/* Suche und Filter */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <Input
+          placeholder="Metaprompts durchsuchen..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+        />
+        <Select
+          options={[
+            { value: 'all', label: 'Alle Kategorien' },
+            ...categories.map(cat => ({ value: cat, label: cat }))
+          ]}
+          value={selectedCategory}
+          onChange={(e) => setSelectedCategory(e.target.value)}
+        />
+      </div>
+
       <div className="grid grid-cols-1 gap-4">
-        {metaprompts.length === 0 ? (
+        {filteredMetaprompts.length === 0 ? (
           <Card>
-            <p className="text-text-secondary text-center py-8">Keine Metaprompts vorhanden</p>
+            <p className="text-text-secondary text-center py-8">
+              {metaprompts.length === 0 
+                ? 'Keine Metaprompts vorhanden' 
+                : 'Keine Metaprompts gefunden'}
+            </p>
           </Card>
         ) : (
-          // Sortiere: Standard-Metaprompt zuerst
-          [...metaprompts].sort((a, b) => {
-            if (a.isDefault && !b.isDefault) return -1;
-            if (!a.isDefault && b.isDefault) return 1;
-            return 0;
-          }).map((mp) => {
+          filteredMetaprompts.map((mp) => {
             const isActive = settings?.activeMetapromptId === mp.id;
             return (
             <Card 
@@ -186,9 +253,27 @@ const Metaprompts: React.FC = () => {
                         <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                       </svg>
                     )}
+                    <button
+                      onClick={() => toggleFavorite(mp.id)}
+                      className="focus:outline-none"
+                      title={mp.isFavorite ? 'Aus Favoriten entfernen' : 'Zu Favoriten hinzufügen'}
+                    >
+                      <svg 
+                        className={`w-5 h-5 ${mp.isFavorite ? 'text-yellow-500 fill-current' : 'text-text-secondary'}`} 
+                        fill={mp.isFavorite ? 'currentColor' : 'none'} 
+                        viewBox="0 0 20 20"
+                      >
+                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                      </svg>
+                    </button>
                     <h3 className={`text-lg font-semibold ${mp.isDefault ? 'text-brand' : 'text-text-primary'}`}>
                       {mp.name}
                     </h3>
+                    {mp.category && (
+                      <span className="text-xs px-2 py-1 bg-bg-secondary rounded text-text-secondary">
+                        {mp.category}
+                      </span>
+                    )}
                   </div>
                   {mp.description && (
                     <p className="text-sm text-text-secondary mb-2">{mp.description}</p>

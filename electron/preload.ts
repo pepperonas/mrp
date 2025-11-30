@@ -15,6 +15,7 @@ contextBridge.exposeInMainWorld('mrp', {
   getMetaprompts: (): Promise<Metaprompt[]> => ipcRenderer.invoke('metaprompts:get'),
   saveMetaprompt: (mp: Metaprompt): Promise<void> => ipcRenderer.invoke('metaprompts:save', mp),
   deleteMetaprompt: (id: string): Promise<void> => ipcRenderer.invoke('metaprompts:delete', id),
+  toggleFavorite: (id: string): Promise<void> => ipcRenderer.invoke('metaprompts:toggleFavorite', id),
   
   // Optimization
   optimize: (request: OptimizationRequest): Promise<{ success: boolean; optimizedPrompt?: string; error?: string }> => 
@@ -72,6 +73,7 @@ declare global {
       getMetaprompts: () => Promise<Metaprompt[]>;
       saveMetaprompt: (mp: Metaprompt) => Promise<void>;
       deleteMetaprompt: (id: string) => Promise<void>;
+      toggleFavorite: (id: string) => Promise<void>;
       optimize: (request: OptimizationRequest) => Promise<{ success: boolean; optimizedPrompt?: string; error?: string }>;
       readClipboard: () => Promise<string>;
       writeClipboard: (text: string) => Promise<void>;

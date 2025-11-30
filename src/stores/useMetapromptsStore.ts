@@ -10,6 +10,7 @@ interface MetapromptsStore {
   deleteMetaprompt: (id: string) => Promise<void>;
   createMetaprompt: (name: string, content: string, description?: string) => Promise<Metaprompt>;
   setDefault: (id: string) => Promise<void>;
+  toggleFavorite: (id: string) => Promise<void>;
 }
 
 export const useMetapromptsStore = create<MetapromptsStore>((set, get) => ({
@@ -102,6 +103,22 @@ export const useMetapromptsStore = create<MetapromptsStore>((set, get) => ({
       }
       
       set({ metaprompts: updated });
+    }
+  },
+  
+  toggleFavorite: async (id: string) => {
+    try {
+      await window.mrp.toggleFavorite(id);
+      const metaprompts = get().metaprompts;
+      const updated = metaprompts.map(m => 
+        m.id === id 
+          ? { ...m, isFavorite: !m.isFavorite, updatedAt: new Date() }
+          : m
+      );
+      set({ metaprompts: updated });
+    } catch (error) {
+      console.error('Failed to toggle favorite:', error);
+      throw error;
     }
   },
 }));

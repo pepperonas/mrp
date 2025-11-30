@@ -1,11 +1,26 @@
 export type Provider = 'openai' | 'anthropic' | 'grok' | 'gemini';
 
+export type MetapromptCategory = 
+  | 'Entwicklung'
+  | 'Kommunikation'
+  | 'Datenanalyse'
+  | 'Recht'
+  | 'Business'
+  | 'Marketing'
+  | 'Design'
+  | 'Bildung'
+  | 'Kreativ'
+  | 'Lifestyle'
+  | 'Visualisierung';
+
 export interface Metaprompt {
   id: string;
   name: string;
   description?: string;
   content: string;
+  category?: MetapromptCategory;
   isDefault: boolean;
+  isFavorite?: boolean;
   createdAt: Date;
   updatedAt: Date;
 }

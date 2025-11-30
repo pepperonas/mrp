@@ -118,6 +118,20 @@ export const deleteMetaprompt = (id: string): void => {
   store.set('metaprompts', filtered);
 };
 
+export const toggleFavorite = (id: string): void => {
+  const metaprompts = getMetaprompts();
+  const index = metaprompts.findIndex(m => m.id === id);
+  
+  if (index >= 0) {
+    metaprompts[index] = {
+      ...metaprompts[index],
+      isFavorite: !metaprompts[index].isFavorite,
+      updatedAt: new Date(),
+    };
+    store.set('metaprompts', metaprompts);
+  }
+};
+
 export const getHistory = () => {
   return store.get('history', []);
 };
