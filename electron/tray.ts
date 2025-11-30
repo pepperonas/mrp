@@ -348,12 +348,6 @@ export const createTray = (mainWindow: BrowserWindow | null): void => {
       tray.popUpContextMenu();
     }
   });
-  
-  // Auf macOS: Auch auf 'click' Event reagieren (falls right-click nicht funktioniert)
-  if (process.platform === 'darwin') {
-    // Zusätzlicher Handler für macOS-spezifisches Verhalten
-    tray.on('click', toggleWindow);
-  }
 
   // Menü bei Änderungen aktualisieren
   if (mainWindow) {
