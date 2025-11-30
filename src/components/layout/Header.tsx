@@ -182,6 +182,7 @@ const Header: React.FC<HeaderProps> = ({ currentPage, onPageChange, onAboutClick
                     onAboutClick();
                   }}
                   className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-text-primary hover:bg-bg-primary transition-colors duration-150 text-left"
+                  style={{ WebkitAppRegion: 'no-drag' as any }}
                   role="menuitem"
                 >
                   <svg 
