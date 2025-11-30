@@ -106,11 +106,47 @@ jobs:
           name: linux-build
           path: dist/
 
-      - name: List artifacts
+      - name: Find release files
+        id: find_files
+        shell: bash
         run: |
-          echo "Artifacts in dist/:"
+          echo "Searching for release files in dist/:"
           ls -lh dist/ || echo "No dist directory found"
-          find dist -type f -name "*.dmg" -o -name "*.exe" -o -name "*.AppImage" || echo "No build artifacts found"
+          
+          # Finde die Build-Dateien
+          DMG_FILE=$(find dist -name "MRP-*-macOS.dmg" -type f | head -1)
+          EXE_FILE=$(find dist -name "MRP-*-Windows-Portable.exe" -type f | head -1)
+          APPIMAGE_FILE=$(find dist -name "MRP-*-x86_64.AppImage" -type f | head -1)
+          
+          if [ -n "$DMG_FILE" ]; then
+            echo "dmg_file=$DMG_FILE" >> $GITHUB_OUTPUT
+            echo "Found DMG: $DMG_FILE"
+            ls -lh "$DMG_FILE"
+          else
+            echo "Warning: No DMG file found"
+          fi
+          
+          if [ -n "$EXE_FILE" ]; then
+            echo "exe_file=$EXE_FILE" >> $GITHUB_OUTPUT
+            echo "Found EXE: $EXE_FILE"
+            ls -lh "$EXE_FILE"
+          else
+            echo "Warning: No EXE file found"
+          fi
+          
+          if [ -n "$APPIMAGE_FILE" ]; then
+            echo "appimage_file=$APPIMAGE_FILE" >> $GITHUB_OUTPUT
+            echo "Found AppImage: $APPIMAGE_FILE"
+            ls -lh "$APPIMAGE_FILE"
+          else
+            echo "Warning: No AppImage file found"
+          fi
+          
+          # Prüfe ob mindestens eine Datei gefunden wurde
+          if [ -z "$DMG_FILE" ] && [ -z "$EXE_FILE" ] && [ -z "$APPIMAGE_FILE" ]; then
+            echo "Error: No release files found!"
+            exit 1
+          fi
 
       - name: Create Release
         uses: softprops/action-gh-release@v1
@@ -133,9 +169,9 @@ jobs:
             ### Änderungen
             Siehe [CHANGELOG.md](CHANGELOG.md) für Details.
           files: |
-            dist/MRP-*-macOS.dmg
-            dist/MRP-*-Windows-Portable.exe
-            dist/MRP-*-x86_64.AppImage
+            ${{ steps.find_files.outputs.dmg_file }}
+            ${{ steps.find_files.outputs.exe_file }}
+            ${{ steps.find_files.outputs.appimage_file }}
           draft: false
           prerelease: false
         env:
