@@ -10,6 +10,7 @@ import Header from './components/layout/Header';
 import StatusBar from './components/layout/StatusBar';
 import { AboutDialog } from './components/ui/AboutDialog';
 import { OnboardingDialog } from './components/ui/OnboardingDialog';
+import { GuideDialog } from './components/ui/GuideDialog';
 import type { Provider } from './types';
 
 type Page = 'dashboard' | 'metaprompts' | 'settings' | 'history';
@@ -18,6 +19,7 @@ function App() {
   const [currentPage, setCurrentPage] = useState<Page>('dashboard');
   const [showAbout, setShowAbout] = useState(false);
   const [showOnboarding, setShowOnboarding] = useState(false);
+  const [showGuide, setShowGuide] = useState(false);
   const [onboardingChecked, setOnboardingChecked] = useState(false);
   const [version, setVersion] = useState('1.0.0');
   const { loadSettings, settings, updateSettings } = useSettingsStore();
@@ -56,15 +58,18 @@ function App() {
 
   // Zeige Onboarding-Dialog beim App-Start, außer es wurde deaktiviert
   useEffect(() => {
-    if (settings && !onboardingChecked) {
+    if (!onboardingChecked && settings !== null) {
       setOnboardingChecked(true);
+      
       // Zeige Onboarding wenn es nicht explizit auf false gesetzt wurde
-      // undefined oder true bedeutet, dass es angezeigt werden soll
-      if (settings.showOnboarding !== false) {
-        // Kleine Verzögerung, damit die App vollständig geladen ist
+      // Standardmäßig wird es angezeigt (true oder undefined)
+      const shouldShow = settings.showOnboarding !== false;
+      
+      if (shouldShow) {
+        // Verzögerung, damit die App vollständig geladen ist
         const timer = setTimeout(() => {
           setShowOnboarding(true);
-        }, 500);
+        }, 1000);
         return () => clearTimeout(timer);
       }
     }
@@ -98,6 +103,7 @@ function App() {
         currentPage={currentPage} 
         onPageChange={setCurrentPage} 
         onAboutClick={() => setShowAbout(true)}
+        onGuideClick={() => setShowGuide(true)}
       />
       <main className="flex-1 overflow-auto bg-bg-primary">
         {renderPage()}
@@ -105,6 +111,7 @@ function App() {
       <StatusBar />
       <AboutDialog isOpen={showAbout} onClose={() => setShowAbout(false)} version={version} />
       <OnboardingDialog isOpen={showOnboarding} onClose={handleOnboardingClose} />
+      <GuideDialog isOpen={showGuide} onClose={() => setShowGuide(false)} />
     </div>
   );
 }

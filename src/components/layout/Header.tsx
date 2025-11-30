@@ -6,9 +6,10 @@ interface HeaderProps {
   currentPage: Page;
   onPageChange: (page: Page) => void;
   onAboutClick: () => void;
+  onGuideClick: () => void;
 }
 
-const Header: React.FC<HeaderProps> = ({ currentPage, onPageChange, onAboutClick }) => {
+const Header: React.FC<HeaderProps> = ({ currentPage, onPageChange, onAboutClick, onGuideClick }) => {
   const pages: { id: Page; label: string; icon: React.ReactNode }[] = [
     { 
       id: 'dashboard', 
@@ -86,11 +87,34 @@ const Header: React.FC<HeaderProps> = ({ currentPage, onPageChange, onAboutClick
           {/* Separator */}
           <div className="w-px h-7 bg-bg-primary mx-2" />
           
+          {/* Guide button */}
+          <button
+            onClick={onGuideClick}
+            className="p-2.5 rounded-lg transition-all duration-200 text-text-secondary hover:text-text-primary hover:bg-bg-primary active:scale-95"
+            title="Anleitung anzeigen"
+            aria-label="Anleitung"
+          >
+            <svg 
+              xmlns="http://www.w3.org/2000/svg" 
+              className="h-5 w-5" 
+              fill="none" 
+              viewBox="0 0 24 24" 
+              stroke="currentColor"
+            >
+              <path 
+                strokeLinecap="round" 
+                strokeLinejoin="round" 
+                strokeWidth={2} 
+                d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" 
+              />
+            </svg>
+          </button>
+          
           {/* About button */}
           <button
             onClick={onAboutClick}
             className="px-4 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 text-text-secondary hover:text-text-primary hover:bg-bg-primary active:scale-95"
-            title="Über Metaprompt & Anleitung"
+            title="Über Metaprompt"
             aria-label="Über Metaprompt"
           >
             Über
