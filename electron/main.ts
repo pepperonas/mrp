@@ -1,5 +1,5 @@
 import { app, BrowserWindow, ipcMain, Notification } from 'electron';
-import { readFileSync } from 'fs';
+import { readFileSync, existsSync } from 'fs';
 import { join } from 'path';
 import path from 'path';
 import { createTray, updateTrayMenu, destroyTray } from './tray';
@@ -386,10 +386,38 @@ ipcMain.handle('costs:getLast30Days', (_event, provider: Provider) => {
 // App Info
 ipcMain.handle('app:getVersion', () => {
   try {
-    const packagePath = join(__dirname, '../../package.json');
-    const packageJson = JSON.parse(readFileSync(packagePath, 'utf-8'));
-    return packageJson.version;
+    // Versuche verschiedene mögliche Pfade für package.json
+    const possiblePaths = [
+      join(__dirname, '../../package.json'), // Development
+      join(process.resourcesPath, 'app/package.json'), // Production (packaged)
+      join(app.getAppPath(), 'package.json'), // Production (alternative)
+      join(__dirname, '../../../package.json'), // Alternative path
+    ];
+    
+    for (const packagePath of possiblePaths) {
+      try {
+        if (existsSync(packagePath)) {
+          const packageJson = JSON.parse(readFileSync(packagePath, 'utf-8'));
+          console.log(`[Main] Version loaded from: ${packagePath} -> ${packageJson.version}`);
+          return packageJson.version;
+        }
+      } catch (e) {
+        // Weiter zum nächsten Pfad
+        continue;
+      }
+    }
+    
+    // Fallback: Versuche es mit app.getVersion() von Electron
+    const appVersion = app.getVersion();
+    if (appVersion && appVersion !== '1.0.0') {
+      console.log(`[Main] Version from app.getVersion(): ${appVersion}`);
+      return appVersion;
+    }
+    
+    console.warn('[Main] Could not find package.json, using fallback version');
+    return '1.0.0'; // Fallback
   } catch (error) {
+    console.error('[Main] Error getting version:', error);
     return '1.0.0'; // Fallback
   }
 });
