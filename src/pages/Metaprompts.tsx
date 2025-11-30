@@ -195,8 +195,8 @@ const Metaprompts: React.FC = () => {
         <div className="flex-1">
           <h1 className="text-3xl font-bold text-text-primary mb-2">Metaprompts</h1>
           <p className="text-text-secondary leading-relaxed max-w-2xl">
-            Metaprompts sind Vorlagen, die definieren, wie normale Prompts optimiert werden sollen. 
-            Erstelle mehrere Vorlagen und wähle sie im Dashboard aus.
+            Metaprompts sind KI-gestützte Vorlagen, die definieren, wie deine Prompts optimiert werden. 
+            Wähle aus 60+ vorgefertigten Vorlagen oder erstelle eigene. Nur aktive Metaprompts erscheinen in der Auswahl.
           </p>
         </div>
         <div className="flex space-x-3 ml-6">

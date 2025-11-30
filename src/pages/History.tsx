@@ -39,7 +39,7 @@ const History: React.FC = () => {
       <div>
         <h1 className="text-3xl font-bold text-text-primary mb-2">Optimierungs-Verlauf</h1>
         <p className="text-text-secondary leading-relaxed">
-          Übersicht über die letzten 20 Optimierungen
+          Übersicht über die letzten 20 Prompt-Optimierungen mit Vorher/Nachher-Vergleich, verwendeten Metaprompts und Providern
         </p>
       </div>
 

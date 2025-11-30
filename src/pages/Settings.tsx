@@ -57,8 +57,8 @@ const Settings: React.FC = () => {
         <h1 className="text-3xl font-bold text-text-primary mb-2">Einstellungen</h1>
         <p className="text-text-secondary leading-relaxed">
           {activeTab === 'api-keys' 
-            ? 'Konfiguriere deine API-Keys für die verschiedenen Anbieter. Die Keys werden verschlüsselt gespeichert.'
-            : 'Konfiguriere das Verhalten der Anwendung und verwalte deine API-Keys'}
+            ? 'Konfiguriere deine API-Keys für OpenAI, Anthropic, Grok und Gemini. Die Keys werden verschlüsselt gespeichert.'
+            : 'Konfiguriere Shortcuts, App-Verhalten und API-Keys für die KI-gestützte Prompt-Optimierung'}
         </p>
       </div>
 

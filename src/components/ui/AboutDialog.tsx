@@ -29,7 +29,7 @@ export const AboutDialog: React.FC<AboutDialogProps> = ({ isOpen, onClose, versi
           {/* App Name & Tagline */}
           <div className="text-center space-y-1">
             <h2 className="text-2xl font-bold text-text-primary">Metaprompt</h2>
-            <p className="text-text-secondary">Prompt-Optimierer</p>
+            <p className="text-text-secondary">KI-gestützte Prompt-Optimierung</p>
           </div>
 
           {/* Version */}

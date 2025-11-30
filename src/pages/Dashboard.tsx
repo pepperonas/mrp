@@ -148,7 +148,7 @@ const Dashboard: React.FC = () => {
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-text-primary mb-2">Dashboard</h1>
         <p className="text-text-secondary">
-          Verwalte deine Metaprompts, wähle Provider und optimiere Prompts mit einem Klick.
+          Wähle Metaprompts, konfiguriere KI-Provider und optimiere Prompts mit einem Klick.
         </p>
       </div>
 
@@ -208,7 +208,7 @@ const Dashboard: React.FC = () => {
         </div>
       </Card>
 
-      <Card title="Provider-Status & Auswahl">
+      <Card title="KI-Provider Status & Auswahl">
         <div className="space-y-4">
           <p className="text-sm text-text-secondary leading-relaxed">
             Wähle einen aktiven Provider. Nur Provider mit gültigem API-Key können ausgewählt werden.

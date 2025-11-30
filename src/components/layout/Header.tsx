@@ -85,7 +85,7 @@ const Header: React.FC<HeaderProps> = ({ currentPage, onPageChange, onAboutClick
         <div className="flex items-center space-x-3">
           <h1 className="text-2xl font-bold text-text-primary tracking-tight">Metaprompt</h1>
           <span className="text-xs text-text-secondary font-medium px-2 py-1 bg-bg-primary rounded-md">
-            Prompt-Optimierer
+            KI-gestützte Prompt-Optimierung
           </span>
         </div>
         <nav className="flex items-center space-x-1 flex-shrink-0">

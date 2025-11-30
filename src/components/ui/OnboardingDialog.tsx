@@ -19,7 +19,8 @@ const onboardingSteps: OnboardingStep[] = [
     content: (
       <div className="space-y-4">
         <p className="text-text-secondary">
-          Metaprompt ist ein Desktop-Tool zur KI-gestützten Prompt-Optimierung mit Clipboard-Integration.
+          Metaprompt ist ein Desktop-Tool zur KI-gestützten Prompt-Optimierung mit 60+ vorgefertigten Metaprompts, 
+          Unterstützung für mehrere KI-Provider und nahtloser Clipboard-Integration.
         </p>
         <p className="text-text-secondary">
           In diesem kurzen Walkthrough zeigen wir dir alle wichtigen Features und wie du die App einrichtest.
@@ -53,10 +54,11 @@ const onboardingSteps: OnboardingStep[] = [
     content: (
       <div className="space-y-4">
         <p className="text-text-secondary">
-          <strong>Metaprompts</strong> sind Vorlagen, die definieren, wie normale Prompts optimiert werden sollen.
+          <strong>Metaprompts</strong> sind KI-gestützte Vorlagen, die definieren, wie deine Prompts optimiert werden sollen.
         </p>
         <p className="text-text-secondary">
-          Die App kommt mit <strong>60+ vorgefertigten Metaprompts</strong> in verschiedenen Kategorien:
+          Die App kommt mit <strong>60+ vorgefertigten Metaprompts</strong> in verschiedenen Kategorien. 
+          Per Default sind die wichtigsten 10 aktiviert, alle anderen kannst du bei Bedarf aktivieren:
         </p>
         <ul className="list-disc list-inside space-y-1 text-text-secondary ml-4">
           <li>Standard Optimizer (kann nicht gelöscht werden)</li>
@@ -70,7 +72,8 @@ const onboardingSteps: OnboardingStep[] = [
           <li>Bildung, Kreativ, Lifestyle und mehr</li>
         </ul>
         <p className="text-text-secondary">
-          Du kannst auch eigene Metaprompts erstellen oder mit KI generieren lassen.
+          Du kannst eigene Metaprompts erstellen, mit KI generieren lassen oder Metaprompts als Favoriten markieren, 
+          damit sie in der Auswahl ganz oben erscheinen.
         </p>
       </div>
     ),
@@ -81,13 +84,14 @@ const onboardingSteps: OnboardingStep[] = [
     content: (
       <div className="space-y-4">
         <p className="text-text-secondary">
-          Im <strong>Dashboard</strong> kannst du den aktiven Metaprompt per Dropdown auswählen.
+          Im <strong>Dashboard</strong> kannst du den aktiven Metaprompt per Dropdown auswählen. 
+          Favoriten-Metaprompts erscheinen ganz oben in der Liste.
         </p>
         <p className="text-text-secondary">
           Der aktive Metaprompt wird verwendet, um deine Prompts zu optimieren. Du kannst jederzeit zwischen verschiedenen Vorlagen wechseln.
         </p>
         <p className="text-text-secondary">
-          <strong>Tipp:</strong> Der aktive Metaprompt wird auch im Tray-Icon Tooltip angezeigt.
+          <strong>Tipp:</strong> Nur aktive Metaprompts werden in der Auswahl angezeigt. Du kannst Metaprompts in der Metaprompts-Seite aktivieren oder deaktivieren.
         </p>
       </div>
     ),
@@ -140,9 +144,9 @@ const onboardingSteps: OnboardingStep[] = [
           Die App läuft im Hintergrund im System Tray:
         </p>
         <ul className="list-disc list-inside space-y-2 text-text-secondary ml-4">
-          <li><strong>Linksklick</strong> auf das Tray-Icon: Fenster öffnen/schließen</li>
-          <li><strong>Rechtsklick</strong> auf das Tray-Icon: Kontextmenü mit Optionen</li>
-          <li><strong>Hovern</strong> über das Tray-Icon: Zeigt den Namen der aktiven Vorlage</li>
+          <li><strong>Linksklick</strong> auf das Tray-Icon: Hauptfenster öffnen/schließen</li>
+          <li><strong>Rechtsklick</strong> auf das Tray-Icon: Kontextmenü mit schnellem Zugriff auf Provider, Metaprompts und Navigation</li>
+          <li><strong>Hovern</strong> über das Tray-Icon: Zeigt den Namen der aktiven Metaprompt-Vorlage</li>
         </ul>
         <p className="text-text-secondary">
           Das Fenster kann geschlossen werden und die App läuft weiter im Hintergrund.
@@ -159,10 +163,11 @@ const onboardingSteps: OnboardingStep[] = [
           Weitere nützliche Features:
         </p>
         <ul className="list-disc list-inside space-y-2 text-text-secondary ml-4">
-          <li><strong>History:</strong> Zeigt die letzten 20 Optimierungen mit Vorher/Nachher</li>
-          <li><strong>Metaprompts verwalten:</strong> Erstelle, bearbeite oder lösche Metaprompts</li>
-          <li><strong>KI-generierte Metaprompts:</strong> Lass die KI Metaprompts für dich erstellen</li>
-          <li><strong>Provider wechseln:</strong> Wähle zwischen verschiedenen KI-Anbietern</li>
+          <li><strong>History:</strong> Zeigt die letzten 20 Optimierungen mit Vorher/Nachher-Vergleich, Metaprompt und Provider</li>
+          <li><strong>Metaprompts verwalten:</strong> Erstelle, bearbeite, lösche oder aktiviere/deaktiviere Metaprompts</li>
+          <li><strong>KI-generierte Metaprompts:</strong> Lass die KI Metaprompts für spezifische Anwendungsfälle erstellen</li>
+          <li><strong>Provider wechseln:</strong> Wähle zwischen OpenAI, Anthropic, Grok und Gemini</li>
+          <li><strong>Favoriten:</strong> Markiere wichtige Metaprompts als Favoriten für schnellen Zugriff</li>
         </ul>
         <p className="text-text-secondary">
           Viel Erfolg beim Optimieren deiner Prompts! 🚀
