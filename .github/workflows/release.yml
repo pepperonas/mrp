@@ -56,20 +56,15 @@ jobs:
           elif [ "${{ matrix.platform }}" == "linux" ]; then
             # Linux hat mehrere Artefakte (deb, rpm, AppImage)
             # Finde alle Linux-Artefakte
-            ARTIFACTS=$(find dist -type f \( -name "MRP-*-Linux.deb" -o -name "MRP-*-Linux.rpm" -o -name "MRP-*-x86_64.AppImage" \))
+            ARTIFACTS=$(find dist -type f \( -name "MRP-*-Linux.deb" -o -name "MRP-*-Linux.rpm" -o -name "MRP-*-x86_64.AppImage" \) | tr '\n' ' ')
             if [ -z "$ARTIFACTS" ]; then
               echo "Error: No Linux artifacts found"
               ls -la dist/ || echo "dist directory not found"
               exit 1
             fi
-            # Speichere alle Artefakte (jede Zeile einzeln)
-            echo "artifact<<EOF" >> $GITHUB_OUTPUT
-            echo "$ARTIFACTS" >> $GITHUB_OUTPUT
-            echo "EOF" >> $GITHUB_OUTPUT
-            echo "Found Linux artifacts:"
-            echo "$ARTIFACTS" | while read -r line; do
-              echo "  - $line"
-            done
+            # Speichere alle Artefakte als Space-separated String
+            echo "artifact=$ARTIFACTS" >> $GITHUB_OUTPUT
+            echo "Found Linux artifacts: $ARTIFACTS"
           else
             if [ -z "$ARTIFACT" ]; then
               echo "Error: No artifact found for ${{ matrix.platform }}"
