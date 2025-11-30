@@ -63,7 +63,6 @@ mac:
 dmg:
   title: "MRP ${version}"
   artifactName: "MRP-${version}-macOS.dmg"
-  format: APFS  # Explizit APFS für Apple Silicon Kompatibilität
   contents:
     - x: 130
       y: 220
