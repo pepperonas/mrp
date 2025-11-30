@@ -66,7 +66,7 @@ export const trackEvent = async (
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 2000);
     
-    const response = await fetch(`${API_URL}/api/metaprompt/track`, {
+    const response = await fetch(`${API_URL}/track`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

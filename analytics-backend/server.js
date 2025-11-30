@@ -66,7 +66,7 @@ app.get('/health', (req, res) => {
 });
 
 // Track Event
-app.post('/api/track', trackLimiter, appIdLimiter, (req, res) => {
+app.post('/track', trackLimiter, appIdLimiter, (req, res) => {
   try {
     const { appId, event, version, platform, locale, metadata } = req.body;
     
