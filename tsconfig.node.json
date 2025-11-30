@@ -1,15 +1,15 @@
 {
   "compilerOptions": {
-    "composite": true,
+    "composite": false,
     "skipLibCheck": true,
     "module": "ESNext",
     "moduleResolution": "bundler",
     "allowSyntheticDefaultImports": true,
     "strict": true,
     "target": "ES2020",
-    "lib": ["ES2020"],
+    "lib": ["ES2020", "DOM"],
     "types": ["node"]
   },
-  "include": ["vite.config.ts", "electron/**/*"]
+  "include": ["vite.config.ts", "electron/**/*", "src/types/**/*", "src/utils/**/*", "src/services/**/*"]
 }
 

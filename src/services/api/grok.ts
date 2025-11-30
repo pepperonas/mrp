@@ -27,12 +27,17 @@ export const optimizeGrok = async (
   });
 
   if (!response.ok) {
-    const error = await response.json().catch(() => ({ error: { message: 'Unknown error' } }));
+    const error = await response.json().catch(() => ({ error: { message: 'Unknown error' } })) as {
+      error?: { message?: string };
+    };
     throw new Error(error.error?.message || `HTTP ${response.status}`);
   }
 
-  const data = await response.json();
-  const content = data.choices[0]?.message?.content?.trim() || '';
+  const data = await response.json() as {
+    choices?: Array<{ message?: { content?: string } }>;
+    usage?: { prompt_tokens?: number; completion_tokens?: number };
+  };
+  const content = data.choices?.[0]?.message?.content?.trim() || '';
   const usage = data.usage;
   
   return {

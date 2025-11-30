@@ -47,7 +47,10 @@ const optimizeOpenAI = async (
     throw new Error(`HTTP ${response.status}: ${errorText}`);
   }
 
-  const data = await response.json();
+  const data = await response.json() as {
+    choices?: Array<{ message?: { content?: string } }>;
+    usage?: { prompt_tokens?: number; completion_tokens?: number };
+  };
   console.log('[OpenAI API] Response:', { hasChoices: !!data.choices, choicesLength: data.choices?.length });
   
   const content = data.choices?.[0]?.message?.content?.trim() || '';
@@ -95,7 +98,10 @@ const optimizeAnthropic = async (
     throw new Error(`HTTP ${response.status}: ${errorText}`);
   }
 
-  const data = await response.json();
+  const data = await response.json() as {
+    content?: Array<{ text?: string }>;
+    usage?: { input_tokens?: number; output_tokens?: number };
+  };
   console.log('[Anthropic API] Response:', { hasContent: !!data.content });
   
   const content = data.content && Array.isArray(data.content) && data.content.length > 0
@@ -145,7 +151,10 @@ const optimizeGrok = async (
     throw new Error(`HTTP ${response.status}: ${errorText}`);
   }
 
-  const data = await response.json();
+  const data = await response.json() as {
+    choices?: Array<{ message?: { content?: string } }>;
+    usage?: { prompt_tokens?: number; completion_tokens?: number };
+  };
   console.log('[Grok API] Response:', { hasChoices: !!data.choices });
   
   const content = data.choices?.[0]?.message?.content?.trim() || '';
@@ -195,7 +204,10 @@ const optimizeGemini = async (
     throw new Error(`HTTP ${response.status}: ${errorText}`);
   }
 
-  const data = await response.json();
+  const data = await response.json() as {
+    candidates?: Array<{ content?: { parts?: Array<{ text?: string }> } }>;
+    usageMetadata?: { promptTokenCount?: number; candidatesTokenCount?: number };
+  };
   console.log('[Gemini API] Response:', { hasCandidates: !!data.candidates });
   
   const content = data.candidates?.[0]?.content?.parts?.[0]?.text?.trim() || '';

@@ -123,7 +123,7 @@ const createTrayMenu = (mainWindow: BrowserWindow | null): Menu => {
     },
     {
       label: 'Aktiver Metaprompt',
-      submenu: metapromptMenu.length > 0 ? metapromptMenu : [{ label: 'Keine Metaprompts', enabled: false }],
+      submenu: metapromptMenu,
     },
     { type: 'separator' },
     {
@@ -241,7 +241,7 @@ export const createTray = (mainWindow: BrowserWindow | null): void => {
   // Fallback: Template-Icon falls kein Custom-Icon gefunden wurde
   if (icon.isEmpty()) {
     try {
-      icon = nativeImage.createFromNamedImage('NSApplicationIcon', 0);
+      icon = nativeImage.createFromNamedImage('NSApplicationIcon', [0]);
       console.log('⚠️  Verwende Standard-Template-Icon');
     } catch {
       icon = nativeImage.createEmpty();
@@ -337,8 +337,7 @@ export const createTray = (mainWindow: BrowserWindow | null): void => {
   
   // Linksklick: Toggle Fenster
   tray.on('click', (event, bounds) => {
-    // Verhindere, dass das Kontextmenü automatisch erscheint
-    event.preventDefault();
+    // Auf macOS wird das Kontextmenü standardmäßig nicht angezeigt bei Linksklick
     toggleWindow();
   });
 

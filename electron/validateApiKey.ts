@@ -4,11 +4,12 @@ import { optimizeAnthropic } from '../src/services/api/anthropic';
 import { optimizeOpenAI } from '../src/services/api/openai';
 import { optimizeGrok } from '../src/services/api/grok';
 import { optimizeGemini } from '../src/services/api/gemini';
+import type { ApiResponse } from '../src/services/api/openai';
 
 export const validateApiKeyDirect = async (provider: Provider, apiKey: string): Promise<{ valid: boolean; error?: string }> => {
   try {
     // Minimaler Test-Request je nach Provider
-    let result: string;
+    let result: ApiResponse;
     
     switch (provider) {
       case 'anthropic': {

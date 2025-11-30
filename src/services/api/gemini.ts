@@ -34,11 +34,16 @@ export const optimizeGemini = async (
   });
 
   if (!response.ok) {
-    const error = await response.json().catch(() => ({ error: { message: 'Unknown error' } }));
+    const error = await response.json().catch(() => ({ error: { message: 'Unknown error' } })) as {
+      error?: { message?: string };
+    };
     throw new Error(error.error?.message || `HTTP ${response.status}`);
   }
 
-  const data = await response.json();
+  const data = await response.json() as {
+    candidates?: Array<{ content?: { parts?: Array<{ text?: string }> } }>;
+    usageMetadata?: { promptTokenCount?: number; candidatesTokenCount?: number };
+  };
   const content = data.candidates?.[0]?.content?.parts?.[0]?.text?.trim() || '';
   const usage = data.usageMetadata;
   

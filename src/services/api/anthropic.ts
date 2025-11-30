@@ -42,16 +42,17 @@ export const optimizeAnthropic = async (
   if (!response.ok) {
     let errorMessage = `HTTP ${response.status}`;
     try {
-      const errorData = await response.json();
+      const errorData = await response.json() as {
+        error?: { message?: string } | string;
+        message?: string;
+      };
       // Anthropic Fehlerstruktur kann unterschiedlich sein
-      if (errorData.error?.message) {
+      if (errorData.error && typeof errorData.error === 'object' && errorData.error.message) {
         errorMessage = errorData.error.message;
       } else if (errorData.error) {
         errorMessage = typeof errorData.error === 'string' ? errorData.error : JSON.stringify(errorData.error);
       } else if (errorData.message) {
         errorMessage = errorData.message;
-      } else if (typeof errorData === 'string') {
-        errorMessage = errorData;
       }
       
       // Spezielle Fehlermeldungen für häufige Probleme
@@ -72,7 +73,10 @@ export const optimizeAnthropic = async (
     throw new Error(errorMessage);
   }
 
-  const data = await response.json();
+  const data = await response.json() as {
+    content?: Array<{ text?: string }>;
+    usage?: { input_tokens?: number; output_tokens?: number };
+  };
   // Anthropic gibt content als Array zurück
   const content = data.content && Array.isArray(data.content) && data.content.length > 0
     ? data.content[0]?.text?.trim() || ''
