@@ -88,16 +88,34 @@ export const setApiKey = (provider: Provider, key: string): void => {
   apiKeyStore.set(provider, encrypted.toString('base64'));
 };
 
+// Die wichtigsten 10 Metaprompts, die per Default aktiv sein sollen
+const TOP_10_METAPROMPTS = [
+  'Software-Entwicklung',
+  'Kommunikation',
+  'Datenanalyse',
+  'Rechtssprechung',
+  'Business',
+  'Bildgenerierung',
+  'Bildbearbeitung',
+  'Mindmap-Erstellung',
+  'Datenvisualisierung (Charts)',
+  'Business-Optimierung',
+];
+
 export const getMetaprompts = (): Metaprompt[] => {
   const metaprompts = store.get('metaprompts', []) as Metaprompt[];
   
-  // Migration: Setze active für bestehende Metaprompts
+  // Migration: Setze active für bestehende Metaprompts basierend auf Top 10
   let needsUpdate = false;
   const migrated = metaprompts.map(mp => {
     if (mp.active === undefined) {
       needsUpdate = true;
-      // Standard-Metaprompt ist immer aktiv, alle anderen werden aktiv gesetzt (kann später deaktiviert werden)
-      return { ...mp, active: mp.isDefault ? true : true };
+      // Standard-Metaprompt ist immer aktiv
+      if (mp.isDefault) {
+        return { ...mp, active: true };
+      }
+      // Top 10 sind aktiv, alle anderen inaktiv
+      return { ...mp, active: TOP_10_METAPROMPTS.includes(mp.name) };
     }
     return mp;
   });
@@ -105,6 +123,23 @@ export const getMetaprompts = (): Metaprompt[] => {
   if (needsUpdate) {
     store.set('metaprompts', migrated);
     return migrated;
+  }
+  
+  // Zusätzliche Migration: Stelle sicher, dass Top 10 aktiv sind (auch wenn bereits migriert)
+  const needsTop10Update = migrated.some(mp => {
+    if (mp.isDefault) return false; // Standard ignorieren
+    const shouldBeActive = TOP_10_METAPROMPTS.includes(mp.name);
+    return mp.active !== shouldBeActive;
+  });
+  
+  if (needsTop10Update) {
+    const updated = migrated.map(mp => {
+      if (mp.isDefault) return mp; // Standard ignorieren
+      const shouldBeActive = TOP_10_METAPROMPTS.includes(mp.name);
+      return { ...mp, active: shouldBeActive };
+    });
+    store.set('metaprompts', updated);
+    return updated;
   }
   
   return metaprompts;

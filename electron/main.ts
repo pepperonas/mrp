@@ -197,6 +197,38 @@ app.whenReady().then(() => {
       saveMetaprompt(mp);
     }
   });
+  
+  // Stelle sicher, dass Top 10 aktiv sind und alle anderen inaktiv (außer Standard)
+  const TOP_10_METAPROMPTS = [
+    'Software-Entwicklung',
+    'Kommunikation',
+    'Datenanalyse',
+    'Rechtssprechung',
+    'Business',
+    'Bildgenerierung',
+    'Bildbearbeitung',
+    'Mindmap-Erstellung',
+    'Datenvisualisierung (Charts)',
+    'Business-Optimierung',
+  ];
+  
+  const allMetaprompts = getMetaprompts();
+  let needsUpdate = false;
+  const updatedMetaprompts = allMetaprompts.map(mp => {
+    if (mp.isDefault) return mp; // Standard ignorieren
+    
+    const shouldBeActive = TOP_10_METAPROMPTS.includes(mp.name);
+    if (mp.active !== shouldBeActive) {
+      needsUpdate = true;
+      return { ...mp, active: shouldBeActive, updatedAt: new Date() };
+    }
+    return mp;
+  });
+  
+  if (needsUpdate) {
+    updatedMetaprompts.forEach(mp => saveMetaprompt(mp));
+    console.log('[Main] Top 10 Metaprompts aktiviert, alle anderen deaktiviert');
+  }
 
   app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) {
