@@ -87,20 +87,28 @@ function App() {
 
   // Zeige Onboarding-Dialog beim App-Start, außer es wurde deaktiviert
   useEffect(() => {
-    if (!onboardingChecked && settings !== null) {
-      setOnboardingChecked(true);
-      
-      // Zeige Onboarding wenn es nicht explizit auf false gesetzt wurde
-      // Standardmäßig wird es angezeigt (true oder undefined)
-      const shouldShow = settings.showOnboarding !== false;
-      
-      if (shouldShow) {
-        // Verzögerung, damit die App vollständig geladen ist
-        const timer = setTimeout(() => {
-          setShowOnboarding(true);
-        }, 1000);
-        return () => clearTimeout(timer);
-      }
+    // Warte bis Settings geladen sind
+    if (settings === null) {
+      return;
+    }
+    
+    // Prüfe nur einmal beim ersten Laden
+    if (onboardingChecked) {
+      return;
+    }
+    
+    setOnboardingChecked(true);
+    
+    // Zeige Onboarding wenn es nicht explizit auf false gesetzt wurde
+    // Standardmäßig wird es angezeigt (true oder undefined)
+    const shouldShow = settings.showOnboarding !== false;
+    
+    if (shouldShow) {
+      // Verzögerung, damit die App vollständig geladen ist
+      const timer = setTimeout(() => {
+        setShowOnboarding(true);
+      }, 1500);
+      return () => clearTimeout(timer);
     }
   }, [settings, onboardingChecked]);
 

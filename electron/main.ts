@@ -119,19 +119,22 @@ app.whenReady().then(() => {
     console.warn('[Main] Failed to track app launch:', err);
   });
   
-  // Für macOS: Benachrichtigungsberechtigung anfordern
+  // Für macOS: Benachrichtigungsberechtigung explizit anfordern
   if (process.platform === 'darwin') {
     // macOS 10.14+ benötigt explizite Berechtigung für Benachrichtigungen
     if (Notification.isSupported()) {
-      // Versuche eine Test-Benachrichtigung zu senden (falls Berechtigung fehlt, wird sie angefordert)
+      // Request notification permission (macOS 10.14+)
+      // Die Berechtigung wird beim ersten Aufruf von show() automatisch angefordert,
+      // aber wir können sie auch explizit anfordern
       try {
+        // Erstelle und zeige eine Test-Benachrichtigung, um Berechtigung anzufordern
         const testNotification = new Notification({
           title: 'Metaprompt',
-          body: 'Bereit',
-          silent: true, // Stumm, nur um Berechtigung zu prüfen/anfordern
+          body: 'Benachrichtigungen aktiviert',
+          silent: false,
         });
-        // Nicht anzeigen, nur erstellen um Berechtigung zu prüfen
-        console.log('[Main] Notification permission checked');
+        testNotification.show();
+        console.log('[Main] Notification permission requested');
       } catch (error) {
         console.warn('[Main] Notification permission issue:', error);
       }

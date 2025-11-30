@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.3.1] - 2025-11-30
+
+### Behoben
+- **Onboarding-Dialog**: Wird jetzt korrekt beim ersten App-Start angezeigt
+- **macOS Benachrichtigungen**: Benachrichtigungen funktionieren jetzt auf macOS
+  - Explizite Berechtigungsanfrage beim App-Start
+  - Verbesserte Fehlerbehandlung für Benachrichtigungen
+
+### Verbessert
+- **Installation**: App entfernt automatisch Quarantäne-Attribut beim Start
+- **Fenster-Verschiebung**: Fenster kann jetzt auf macOS verschoben werden
+
 ## [1.3.0] - 2025-11-30
 
 ### Hinzugefügt
