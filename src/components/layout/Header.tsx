@@ -23,7 +23,7 @@ const Header: React.FC<HeaderProps> = ({ currentPage, onPageChange, onAboutClick
       paddingTop: '20px'
     } as React.CSSProperties}>
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-text-primary flex-shrink-0">MRP</h1>
+        <h1 className="text-2xl font-bold text-text-primary flex-shrink-0">Metaprompt</h1>
         <nav className="flex items-center space-x-4 flex-shrink-0">
           {pages.map((page) => (
             <button
@@ -41,7 +41,7 @@ const Header: React.FC<HeaderProps> = ({ currentPage, onPageChange, onAboutClick
           <button
             onClick={onAboutClick}
             className="px-4 py-2 rounded-lg text-sm font-medium transition-all text-text-secondary hover:text-text-primary hover:bg-bg-primary"
-            title="Über MRP"
+            title="Über Metaprompt"
           >
             Über
           </button>
