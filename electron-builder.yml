@@ -32,7 +32,7 @@ portable:
 mac:
   target:
     - target: dmg
-      arch: [arm64]
+      arch: [x64, arm64]  # Universal Build für Intel und Apple Silicon
   icon: resources/icon.icns
   category: public.app-category.productivity
   extendInfo:
