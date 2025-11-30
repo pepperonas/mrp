@@ -58,8 +58,9 @@ function App() {
   useEffect(() => {
     if (settings && !onboardingChecked) {
       setOnboardingChecked(true);
-      // Zeige Onboarding wenn explizit true
-      if (settings.showOnboarding === true) {
+      // Zeige Onboarding wenn explizit true oder undefined (neue User)
+      // undefined bedeutet, dass die Settings noch nicht existieren oder showOnboarding nicht gesetzt wurde
+      if (settings.showOnboarding === true || settings.showOnboarding === undefined) {
         // Kleine Verzögerung, damit die App vollständig geladen ist
         const timer = setTimeout(() => {
           setShowOnboarding(true);
