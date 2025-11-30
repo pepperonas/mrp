@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 
 type Page = 'dashboard' | 'metaprompts' | 'settings' | 'history';
 
@@ -10,6 +10,30 @@ interface HeaderProps {
 }
 
 const Header: React.FC<HeaderProps> = ({ currentPage, onPageChange, onAboutClick, onGuideClick }) => {
+  const [showMenu, setShowMenu] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
+  const buttonRef = useRef<HTMLButtonElement>(null);
+
+  // Schließe Dropdown beim Klicken außerhalb
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        menuRef.current &&
+        buttonRef.current &&
+        !menuRef.current.contains(event.target as Node) &&
+        !buttonRef.current.contains(event.target as Node)
+      ) {
+        setShowMenu(false);
+      }
+    };
+
+    if (showMenu) {
+      document.addEventListener('mousedown', handleClickOutside);
+      return () => {
+        document.removeEventListener('mousedown', handleClickOutside);
+      };
+    }
+  }, [showMenu]);
   const pages: { id: Page; label: string; icon: React.ReactNode }[] = [
     { 
       id: 'dashboard', 
@@ -88,35 +112,15 @@ const Header: React.FC<HeaderProps> = ({ currentPage, onPageChange, onAboutClick
           {/* Separator */}
           <div className="w-px h-7 bg-bg-primary mx-2" />
           
-          {/* Utility Buttons - Icons only */}
-          <div className="flex items-center space-x-1">
+          {/* More Menu Dropdown */}
+          <div className="relative">
             <button
-              onClick={onGuideClick}
+              ref={buttonRef}
+              onClick={() => setShowMenu(!showMenu)}
               className="p-2.5 rounded-lg transition-all duration-200 text-text-secondary hover:text-text-primary hover:bg-bg-primary active:scale-95"
-              title="Anleitung anzeigen"
-              aria-label="Anleitung"
-            >
-              <svg 
-                xmlns="http://www.w3.org/2000/svg" 
-                className="h-5 w-5" 
-                fill="none" 
-                viewBox="0 0 24 24" 
-                stroke="currentColor"
-              >
-                <path 
-                  strokeLinecap="round" 
-                  strokeLinejoin="round" 
-                  strokeWidth={2} 
-                  d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" 
-                />
-              </svg>
-            </button>
-            
-            <button
-              onClick={onAboutClick}
-              className="p-2.5 rounded-lg transition-all duration-200 text-text-secondary hover:text-text-primary hover:bg-bg-primary active:scale-95"
-              title="Über Metaprompt"
-              aria-label="Über Metaprompt"
+              title="Mehr Optionen"
+              aria-label="Mehr Optionen"
+              aria-expanded={showMenu}
             >
               <svg 
                 className="h-5 w-5" 
@@ -128,10 +132,68 @@ const Header: React.FC<HeaderProps> = ({ currentPage, onPageChange, onAboutClick
                   strokeLinecap="round" 
                   strokeLinejoin="round" 
                   strokeWidth={2} 
-                  d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" 
+                  d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" 
                 />
               </svg>
             </button>
+            
+            {/* Dropdown Menu */}
+            {showMenu && (
+              <div
+                ref={menuRef}
+                className="absolute right-0 mt-2 w-48 bg-bg-secondary border border-bg-primary rounded-lg shadow-lg z-50 py-1"
+                role="menu"
+                aria-orientation="vertical"
+              >
+                <button
+                  onClick={() => {
+                    setShowMenu(false);
+                    onGuideClick();
+                  }}
+                  className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-text-primary hover:bg-bg-primary transition-colors duration-150 text-left"
+                  role="menuitem"
+                >
+                  <svg 
+                    className="h-5 w-5 text-text-secondary" 
+                    fill="none" 
+                    stroke="currentColor" 
+                    viewBox="0 0 24 24"
+                  >
+                    <path 
+                      strokeLinecap="round" 
+                      strokeLinejoin="round" 
+                      strokeWidth={2} 
+                      d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" 
+                    />
+                  </svg>
+                  <span>Anleitung</span>
+                </button>
+                
+                <button
+                  onClick={() => {
+                    setShowMenu(false);
+                    onAboutClick();
+                  }}
+                  className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-text-primary hover:bg-bg-primary transition-colors duration-150 text-left"
+                  role="menuitem"
+                >
+                  <svg 
+                    className="h-5 w-5 text-text-secondary" 
+                    fill="none" 
+                    stroke="currentColor" 
+                    viewBox="0 0 24 24"
+                  >
+                    <path 
+                      strokeLinecap="round" 
+                      strokeLinejoin="round" 
+                      strokeWidth={2} 
+                      d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" 
+                    />
+                  </svg>
+                  <span>Über die App</span>
+                </button>
+              </div>
+            )}
           </div>
         </nav>
       </div>
